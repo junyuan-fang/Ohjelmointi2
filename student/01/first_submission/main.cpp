@@ -12,6 +12,6 @@ int main()
     std::cin >> age;
 
     std::cout << "Pleased to meet you, " << name << "!" << std::endl;
-    //lisäys
+
     return EXIT_SUCCESS;
 }
