@@ -1,5 +1,6 @@
 #include <iostream>
 #include<cmath>
+#include<iomanip>
 using namespace std;
 
 int main()
@@ -8,9 +9,8 @@ int main()
     cout<<"Enter a number: ";
     cin>>kantaluku;
     int tulos=kantaluku*kantaluku*kantaluku;
-
-    if ((not(tulos<0))&&(pow(tulos,1.0/3)==kantaluku)){
-        cout<<"The cube of 2 is "<<tulos<<"."<<endl;
+    if ((not(tulos<0))&&(pow(tulos,1.0/3)-kantaluku<=0.001)){
+        cout<<"The cube of "<<kantaluku<<" is "<<tulos<<"."<<endl;
 
     }
     else{
