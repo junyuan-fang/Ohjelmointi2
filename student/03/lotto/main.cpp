@@ -40,6 +40,10 @@ int main()
         cout<<"The number of balls must be a positive number."<<endl;
     }
 
+    else if (pallo<drawn){
+        cout<<"The maximum number of drawn balls is the total amount of balls."<<endl;
+    }
+
     else{
         cout<<"The probability of guessing all "
            <<drawn<<" balls correctly is 1/"<<kombinaatio(pallo, drawn)<<endl;
