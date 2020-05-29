@@ -1,3 +1,2 @@
-// TODO: Write the declaration of swap function here
-
-
+//  funktio vaihtaa kahden kokonaislukumuuttujan arvot keskenaan.
+void swap( int& luku1, int& luku2);
