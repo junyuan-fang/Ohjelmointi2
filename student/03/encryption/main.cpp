@@ -89,8 +89,8 @@ void encryption(string key, string& txt){
         k_siirtaa=k_indeksi-i;
         char korvaava=aakkonen+k_siirtaa;
 
-
-        for (int w=0; w<txt.length(); ++w){
+        int txtpituus=txt.length();
+        for (int w=0; w<txtpituus; ++w){
 //            if (encry_txt.at(w)=='0'){
                 if(txt.at(w)==aakkonen){
                     encry_txt.replace(w,1,string(1,korvaava));
