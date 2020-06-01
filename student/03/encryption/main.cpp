@@ -47,69 +47,16 @@ int pienaakkoisia(string const& key){
     return 0;
 }
 
-void encryption(string key, string& txt){
-    //tee lista, jossa loytyy ASCII:n arvo 'a-z'-merkijonon merkki
-//    cout<<key<<endl;
-//    cout<<txt<<endl;       ?
-//    for (char kirjain='a';kirjain<='z';++kirjain){
-//        char char_key=key.at(i);
-
-//        for (int i=0;i<26;++i){
-//            if (kirjain=='a'+i){
-//                cout<<kirjain<<" kirjain"<<endl;
-//                cout<<char_key<<" key"<<endl;
-//                int way=kirjain-char_key;
-
-//                cout<<"way "<<way<<endl;
-
-
-//                for (int w=0;w<txt.length();++w){
-//                    char char_txt=txt.at(w);
-//                    if(char_txt==char_key){
-//                        cout<<"chartxt "<<char_txt<<endl;
-//                        //cout<< static_cast<char>(txt.at(w)+way)<<endl;
-//                        txt.at(w)+=way;
-//                        cout<<"new txt.at(w) "<<txt.at(w)<<endl;
-//                        cout<<endl;
-
-//                    }
-//                }
-//            }
-//        }
-//    }
-    int i=0;
-    string encry_txt=string(txt.length(),'0');
-//    for (int i=0; i<26; ++i){
-//        encry_txt.insert(0,0);
-//    }
-    for (char aakkonen='a'; aakkonen<='z';++aakkonen){
-        string :: size_type k_indeksi=0;
-        string :: size_type k_siirtaa=0;
-        k_indeksi=key.find(aakkonen);
-        k_siirtaa=k_indeksi-i;
-        char korvaava=aakkonen+k_siirtaa;
-
-        int txtpituus=txt.length();
-        for (int w=0; w<txtpituus; ++w){
-//            if (encry_txt.at(w)=='0'){
-                if(txt.at(w)==aakkonen){
-                    encry_txt.replace(w,1,string(1,korvaava));
-                    for (int i=0; i<26; ++i){
-                        if (txt.at(i)==korvaava){
-                            encry_txt.replace(txt.find(string(1,korvaava)),1,string(1,aakkonen));
-                        }
-                    }
-
-//                }
-            }
-        }
-        ++i;
+void encryption(string key, string txt){
+    string encrypted_txt="";
+    string :: size_type indeksi=0;
+    int pituus=txt.length();
+    for (int i=0; i<pituus; ++i){
+        char txt_char=txt.at(i);
+        indeksi=static_cast<int>(txt_char-'a');
+        encrypted_txt+=key.at(indeksi);
     }
-
-
-
-
-    cout<<"Encrypted text: "<<encry_txt<<endl;
+    cout<<"Encrypted text: "<<encrypted_txt<<endl;
 
 
 }
@@ -122,7 +69,6 @@ int main()
     string key;
     cout << "Enter the encryption key: ";
     cin>>key;
-//    key="abcdefghijklmnopqrstuvwzyx";
     pituus=key.length();
     if (pituus_virhe(pituus)==1){
         return 1;
@@ -134,10 +80,7 @@ int main()
         string txt;
         cout<<"Enter the text to be encrypted: ";
         cin>>txt;
-//        txt="thismessageisnotreallyencryptedtoomuch";
         encryption(key,txt);
     }
-
-
     return 0;
 }
