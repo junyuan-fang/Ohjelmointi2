@@ -18,13 +18,14 @@ int Player::get_points() const{
 
 void Player::add_points(int pts){
     pts_+=pts;
-}
-bool Player::has_won(){
     if (pts_>50){
         pts_=25;
-        return false;
+        cout<<name_<<" gets penalty points!"<<endl;
     }
-    else if (pts_==50){
+}
+bool Player::has_won(){
+
+    if (pts_==50){
         return true;
     }
     else {
