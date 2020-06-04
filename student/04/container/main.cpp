@@ -19,7 +19,7 @@ void read_integers(std::vector< int >& ints, int count)
 // TODO: Implement your solution here
 bool same_values(const vector<int>&ints_vec){
     int i=0;
-    int sailio;
+    int sailio=0;
 
     for (int alkio: ints_vec){
         if (i!=0){
@@ -34,7 +34,7 @@ bool same_values(const vector<int>&ints_vec){
 }
 
 bool is_ordered_non_strict_ascending(const vector<int>&vector_int){
-    int sailio;
+    int sailio=0;
     for(std::vector<int>::size_type i=0; i<vector_int.size();++i){
         if (i!=0){
             if (sailio<vector_int.at(i)){
@@ -47,8 +47,8 @@ bool is_ordered_non_strict_ascending(const vector<int>&vector_int){
 }
 
 bool is_arithmetic_series(vector<int>&integers){
-    int sailio;
-    int vakio;
+    int sailio=0;
+    int vakio=0;
     for (std::vector<int>::size_type i =0; i<integers.size(); ++i ){
         if (i==1){
             vakio=integers.at(i)-sailio;
