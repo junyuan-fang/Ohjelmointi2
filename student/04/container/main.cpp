@@ -66,7 +66,7 @@ bool is_arithmetic_series(vector<int>&integers){
 bool is_geometric_series(std::vector<int> &integers){
     int i =0;
     int sailio=0;
-    double vakio;
+    double vakio=0;
     for (int alkiot :integers){
         if(i==1){
             vakio=alkiot/sailio;
