@@ -37,7 +37,7 @@ bool is_ordered_non_strict_ascending(const vector<int>&vector_int){
     int sailio=0;
     for(std::vector<int>::size_type i=0; i<vector_int.size();++i){
         if (i!=0){
-            if (sailio<vector_int.at(i)){
+            if (sailio>vector_int.at(i)){
                 return false;
             }
         }
@@ -75,7 +75,11 @@ bool is_geometric_series(std::vector<int> &integers){
             return false;
         }
         sailio=integers.at(i);
+
         ++i;
+        if(sailio==0){
+            return false;
+        }
     }
     return true;
 }
