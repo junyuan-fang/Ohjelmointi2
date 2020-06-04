@@ -11,7 +11,7 @@ void read_integers(std::vector< int >& ints, int count)
     for(int i = 0; i < count; ++i)
     {
         std::cin >> new_integer;
-        ints.at(i)=new_integer;
+        ints.push_back(new_integer);
         // TODO: Implement your solution here
     }
 }
