@@ -10,23 +10,24 @@ vector<string> split(string line , char separator, bool ignoring=false){
     vector<string> return_vector={};
 
     for(string::size_type i=0; i < line.size(); ++i){
-        if (separator==line.at(i)){
+        if (i!=0) {
+            if (separator==line.at(i)){
 
-            if (ignoring==false){
-                return_vector.push_back(splited_string);
-                splited_string="";
+                if (ignoring==false){
+                    return_vector.push_back(splited_string);
+                    splited_string="";
+
+                }
+                else if ((ignoring==true)&&(sailio!=separator)){
+                    return_vector.push_back(splited_string);
+                    splited_string="";
+                }
 
             }
-            else if ((ignoring==true)&&(sailio!=separator)){
-                return_vector.push_back(splited_string);
-                splited_string="";
+            else{
+                splited_string+=line.at(i);
             }
-
         }
-        else{
-            splited_string+=line.at(i);
-        }
-
         if (i==line.size()-1){
             return_vector.push_back(splited_string);
         }
