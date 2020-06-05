@@ -18,7 +18,6 @@ vector<string> split(string line , char separator, bool ignoring=false){
 
             }
             else if ((ignoring==true)&&(sailio!=separator)&&(i!=0)){
-                cout<<i<<endl;
                 return_vector.push_back(splited_string);
                 splited_string="";
             }
