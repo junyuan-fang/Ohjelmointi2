@@ -6,7 +6,27 @@ using namespace std;
 
 void produce_random_numbers(unsigned int lower, unsigned int upper)
 {
-    // Implement your function here
+    string seed_value;
+    cout<<"Enter a seed value or an empty line: ";
+    getline(cin,seed_value);//
+    default_random_engine rand_gen;
+    if (seed_value==""){
+        rand_gen.seed(time(NULL));
+    }
+    else {
+        rand_gen.seed( stoi(seed_value));
+    }
+
+    string repeat_button="";
+    while (repeat_button==""){
+        uniform_int_distribution<int> distribution(lower, upper);
+        cout<<endl<<"Your drawn random number is "<<distribution(rand_gen)<<endl;
+        cout<<"Press enter to continue or q to quit:";
+        getline(cin,repeat_button);
+        if (repeat_button=="q"){
+            return;
+        }
+    }
 }
 
 int main()
