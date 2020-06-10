@@ -22,7 +22,8 @@ void produce_random_numbers(unsigned int lower, unsigned int upper)
         uniform_int_distribution<int> distribution(lower, upper);
         cout<<endl;
         cout<<"Your drawn random number is "<<distribution(rand_gen)<<endl;
-        cout<<"Press enter to continue or q to quit:";
+        cout<<"Press enter to continue or q to quit: ";
+
         getline(cin,repeat_button);
         if (repeat_button=="q"){
             return;
