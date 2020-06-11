@@ -16,55 +16,78 @@
 #include <iostream>
 #include <iomanip>
 #include <random>
+using namespace std;
 
 const int EMPTY = 16;
 const unsigned int PRINT_WIDTH = 5;
+const int RIVI=4;
+const int SARAKE=RIVI;
 
 Board::Board()
 {
     // Add code when necessary
 }
 
-// Unused parameter causes a warning, and thus, it is commented away.
-// When you start to use the parameter, remove comment marks enclosing it.
-void Board::init(int /*seed*/)
+void Board::make_grid(const vector<unsigned int > &number_list){
+//conver vector<unsigned> to vector<vector<unsigned>>
+    vector<vector <unsigned int >> grid;
+    int indeksi=0;
+    for (int rivi=0;rivi<RIVI;++rivi){
+        vector <unsigned int > rivi_vector;
+        for (int sarake=0;sarake<SARAKE;++sarake){
+            rivi_vector.push_back(number_list.at(indeksi));
+            indeksi++;
+        }
+        grid.push_back(rivi_vector);
+    }
+    grid_=grid;
+}
+void Board::init(const int seed)
+//alustus, tässä käytetään <random> eli 1-15 ovat satunnaisessa järjestyksessä.
 {
+    vector<unsigned> numbers(16,0);
 
+    for (int i =0; i< 16; ++i){
+        numbers.at(i)=i+1;
+    }
+    my_shuffle(numbers,seed);
+    make_grid(numbers);
 }
 
-// Unused parameter causes a warning, and thus, it is commented away.
-// When you start to use the parameter, remove comment marks enclosing it.
-bool Board::init(const std::vector<unsigned int> &/*numbers*/)
+
+bool Board::init(const vector<unsigned int> &numbers)
+//alustus, ohjelman käyttäjä itse antaman 1-15 luvuiden järjestyksen avulla
 {
+    make_grid(numbers);
     return true;
 }
 
-void Board::print()
+void Board::print() const
 {
     for(unsigned int x = 0; x < SIZE; ++x)
     {
-        std::cout << std::string(PRINT_WIDTH * SIZE + 1, '-') << std::endl;
+        cout << string(PRINT_WIDTH * SIZE + 1, '-') << endl;
         for(unsigned int y = 0; y < SIZE; ++y)
         {
-            std::cout << "|" << std::setw(PRINT_WIDTH - 1);
+            cout << "|" << setw(PRINT_WIDTH - 1);
             if(grid_.at(x).at(y) != EMPTY)
             {
-                std::cout << grid_.at(x).at(y);
+                cout << grid_.at(x).at(y);
             }
             else
             {
-                std::cout << ".";
+                cout << ".";
             }
         }
-        std::cout << "|" << std::endl;
+        cout << "|" << endl;
     }
-    std::cout << std::string(PRINT_WIDTH * SIZE + 1, '-') << std::endl;
+    cout << string(PRINT_WIDTH * SIZE + 1, '-') << endl;
 }
 
-void Board::my_shuffle(std::vector<unsigned int> &numbers, int seed)
+void Board::my_shuffle(vector<unsigned int> &numbers, int seed)
 {
-    std::default_random_engine randomEng(seed);
-    std::uniform_int_distribution<int> distr(0, numbers.size() - 1);
+    default_random_engine randomEng(seed);
+    uniform_int_distribution<int> distr(0, numbers.size() - 1);
     for(unsigned int i = 0; i < numbers.size(); ++i)
     {
         unsigned int random_index = distr(randomEng);
