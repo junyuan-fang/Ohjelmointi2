@@ -75,16 +75,18 @@ int main()
         return EXIT_FAILURE;
     }
 
-    game_board.print();
+    while(!game_board.is_win()){
+        game_board.print();
 
-    char operation=' ';
-    int luku=0;
-    cout<<"Dir (command, number): ";
-    cin>>operation;
-    cin>>luku;
-    game_board.move(operation, luku);
-    game_board.print();
+        char operation=' ';
+        unsigned int luku=0;
+        cout<<"Dir (command, number): ";
+        cin>>operation;
+        cin>>luku;
+        game_board.move(operation, luku);
+    }
     // More functionality
 
+    cout<<"You won!"<<endl;
     return EXIT_SUCCESS;
 }

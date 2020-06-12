@@ -40,6 +40,9 @@ public:
 
     void move(char operation, unsigned int luku);
 
+    //check the winning state
+    bool is_win();
+
 private:
     // Shuffles the numbers vector by using seed as a seed value
     void my_shuffle(vector<unsigned int>& numbers, int seed);
@@ -47,8 +50,13 @@ private:
     //change vector<unsigned> to vector<vector<unsigned>>
     void make_grid(const vector<unsigned> &number_list);
 
+    void make_win_grid();
+
     // Game grid for the 15 puzzle
     vector<vector<unsigned int>> grid_;
+
+    // Game grid, which permutation means player wins
+    vector<vector<unsigned int>> win_grid_;
 
     vector<int> return_x_y( unsigned int luku) ;
     // More attributes/methods

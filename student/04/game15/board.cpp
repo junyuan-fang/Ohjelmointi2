@@ -23,6 +23,7 @@ const unsigned int PRINT_WIDTH = 5;
 
 Board::Board()
 {
+    make_win_grid();
     // Add code when necessary
 }
 
@@ -40,6 +41,7 @@ void Board::make_grid(const vector<unsigned int > &number_list){
     }
     grid_=grid;
 }
+
 void Board::init(const int seed)
 //alustus, tässä käytetään <random> eli 1-15 ovat satunnaisessa järjestyksessä.
 {
@@ -54,7 +56,7 @@ void Board::init(const int seed)
 
 
 bool Board::init(const vector<unsigned int> &numbers)
-//alustus, ohjelman käyttäjä itse antaman 1-15 luvuiden järjestyksen avulla
+//alustaa ohjelman käyttäjä antaman 1-16 luvuiden järjestyksella
 {
     make_grid(numbers);
     return true;
@@ -103,7 +105,7 @@ vector< int> Board::return_x_y( unsigned int luku) {
             }
         }
     }
-    return {EMPTY};
+    return {EMPTY};//
 }
 
 void Board :: move(char operation, unsigned int luku){
@@ -123,13 +125,50 @@ void Board :: move(char operation, unsigned int luku){
         ++x;
     }
     else if (operation=='w'){
-        ++y;
+        --y;
     }
     else if (operation=='s'){
-        --y;
+        ++y;
     }
 
     //luvun vaihtaminen
-    grid_.at(y_alussa).at(x_alussa)=grid_.at(y).at(x);
-    grid_.at(y).at(x)= temp_nu;
+    //vaihtaminen tapahtuu ainoastaan silloin, kun vastaavalla indeksilla on tyhja paikka
+    if (grid_.at(y).at(x)==16){
+        grid_.at(y_alussa).at(x_alussa)=grid_.at(y).at(x);
+        grid_.at(y).at(x)= temp_nu;
+    }
+    else{
+        //pass
+    }
+}
+
+void Board::make_win_grid(){
+    vector<vector <unsigned int >> win_grid;
+    unsigned int value=0;
+    for (int rivi=0;rivi<SIZE;++rivi){
+        vector <unsigned int > rivi_vector;
+        for (int sarake=0;sarake<SIZE;++sarake){
+            ++value;
+            rivi_vector.push_back(value);
+        }
+        win_grid.push_back(rivi_vector);
+    }
+    win_grid_=win_grid;
+}
+bool Board::is_win(){
+    int right_times=0;
+    for ( int y=0; y<SIZE;++y){
+        for ( int x =0 ; x<SIZE; ++x){
+            if (grid_.at(y).at(x)==win_grid_.at(y).at(x)){
+                ++right_times;
+
+            }
+        }
+    }
+    if(right_times==16){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
