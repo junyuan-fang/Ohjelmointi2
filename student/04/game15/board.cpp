@@ -29,7 +29,7 @@ Board::Board()
 
 bool Board::is_solvable(){
     int inversio=0;
-    for(unsigned int i=2; i<17; i++){
+    for(unsigned int i=2; i<16; i++){
 
         for (int y=0;y<SIZE;++y){
             for(int x=0; x<SIZE; ++x){

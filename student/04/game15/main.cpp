@@ -78,6 +78,7 @@ bool init_board(Board& g_board)
                 cin >> input;
                 inputs.push_back(input);
             }
+//            inputs={1,2,3,4,9,6,7,8,5,16,12,11,14,13,15,10};
             if (!is_misssing_num(inputs)){
                 return g_board.init(inputs);//vastanottaa vektori, ja palauttaa ture
             }
@@ -120,20 +121,25 @@ int main()
 
     if(!game_board.is_solvable()){
         cout<<"Game is not solvable. What a pity."<<endl;
-        return EXIT_FAILURE;
+        return EXIT_SUCCESS;
     }
 
-    while(!game_board.is_win()){
-        game_board.print();
+    game_board.print();
 
+    while(!game_board.is_win()){
         char operation=' ';
         unsigned int luku=0;
         cout<<"Dir (command, number): ";
         cin>>operation;
         cin>>luku;
+        if (operation=='q'){
+            return EXIT_SUCCESS;
+        }
+
         if (is_right_operation(operation)&& is_1to15(luku)){
             game_board.move(operation, luku);
         }
+        game_board.print();
 
 
     }
