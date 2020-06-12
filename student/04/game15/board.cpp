@@ -44,7 +44,7 @@ bool Board::is_solvable(){
     // luku 16 oikeaseen kulmaan tarvittavat siirtymiset
     for(int y=0;y<SIZE;++y){
         for(int x=0;x<SIZE;++x){
-            if (grid_.at(y).at(x)==16){
+            if (grid_.at(y).at(x)==16 and ((x!=SIZE-1)&&(y!=SIZE-2)) and ((x!=SIZE-2)&&(y!=SIZE-1))){
                 inversio+=(SIZE-1-y)-(SIZE-1-x);
             }
         }
