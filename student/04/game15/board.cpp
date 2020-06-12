@@ -29,24 +29,25 @@ Board::Board()
 
 bool Board::is_solvable(){
     int inversio=0;
-    for(unsigned int i=2; i<16; i++){
-
-        for (int y=0;y<SIZE;++y){
-            for(int x=0; x<SIZE; ++x){
-                //estitaan inversioita
-                unsigned int luku_inversio_vert=grid_.at(y).at(x);
-                if(luku_inversio_vert==i){
-                    for (int yy=y; yy<SIZE;++yy){
-                        for (int xx=x; xx<SIZE;++xx){
-                            if ( grid_.at(yy).at(xx)<luku_inversio_vert){
-                                inversio++;
-                            }
-                        }
+    for(unsigned int i=1; i<16; i++){
+        for (int y=0;y<16;++y){
+            //estitaan inversioita
+            if(one_dimesion_grid_.at(y)==i){
+                for (int yy=y; yy<16;++yy){
+                    if ( one_dimesion_grid_.at(yy)<i){
+                        ++inversio;
                     }
                 }
             }
         }
-
+    }
+    // luku 16 oikeaseen kulmaan tarvittavat siirtymiset
+    for(int y=0;y<SIZE;++y){
+        for(int x=0;x<SIZE;++x){
+            if (grid_.at(y).at(x)==16){
+                inversio+=(SIZE-1-y)-(SIZE-1-x);
+            }
+        }
     }
     if (inversio%2==0){
         cout<<"Game is solvable: Go ahead!"<<endl;
@@ -59,6 +60,7 @@ bool Board::is_solvable(){
 
 void Board::make_grid(const vector<unsigned int > &number_list){
 //conver vector<unsigned> to vector<vector<unsigned>>
+    one_dimesion_grid_=number_list;
     vector<vector <unsigned int >> grid;
     int indeksi=0;
     for (int rivi=0;rivi<SIZE;++rivi){
@@ -138,7 +140,7 @@ vector< int> Board::return_x_y( unsigned int luku) {
     return {EMPTY};//
 }
 
-void Board :: move(const char& operation, unsigned int luku){
+void Board :: move(const string& operation, unsigned int luku){
     //sarake indeksi= y , rivi indeksi=x
 
     int y= return_x_y(luku).at(0);
@@ -148,16 +150,16 @@ void Board :: move(const char& operation, unsigned int luku){
     int y_alussa=y;
     int temp_nu=grid_.at(y_alussa).at(x_alussa);
 
-    if (operation=='a'){
+    if (operation=="a"){
         --x;
     }
-    else if (operation=='d'){
+    else if (operation=="d"){
         ++x;
     }
-    else if (operation=='w'){
+    else if (operation=="w"){
         --y;
     }
-    else if (operation=='s'){
+    else if (operation=="s"){
         ++y;
     }
 

@@ -78,7 +78,7 @@ bool init_board(Board& g_board)
                 cin >> input;
                 inputs.push_back(input);
             }
-//            inputs={1,2,3,4,9,6,7,8,5,16,12,11,14,13,15,10};
+            //inputs={2,5,12,16,7,1,3,6,11,14,8,15,4,9,10,13};
             if (!is_misssing_num(inputs)){
                 return g_board.init(inputs);//vastanottaa vektori, ja palauttaa ture
             }
@@ -91,8 +91,8 @@ bool init_board(Board& g_board)
     return true;  // This should never be reached
 }
 
-bool is_right_operation(const char& operation){
-    if(operation=='w' || operation=='s' || operation=='a' || operation=='d'){
+bool is_right_operation(const string& operation){
+    if(operation=="w" || operation=="s" || operation=="a" || operation=="d"){
         return true;
     }
     else{
@@ -127,14 +127,14 @@ int main()
     game_board.print();
 
     while(!game_board.is_win()){
-        char operation=' ';
+        string operation="";
         unsigned int luku=0;
         cout<<"Dir (command, number): ";
         cin>>operation;
-        cin>>luku;
-        if (operation=='q'){
+        if (operation=="q"){
             return EXIT_SUCCESS;
         }
+        cin>>luku;
 
         if (is_right_operation(operation)&& is_1to15(luku)){
             game_board.move(operation, luku);

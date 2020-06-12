@@ -38,7 +38,7 @@ public:
     // Prints the game grid
     void print() const;
 
-    void move(const char& operation, unsigned int luku);
+    void move(const string& operation, unsigned int luku);
 
     //check the winning state
     bool is_win();
@@ -56,6 +56,8 @@ private:
 
     // Game grid for the 15 puzzle
     vector<vector<unsigned int>> grid_;
+
+    vector<unsigned int> one_dimesion_grid_;
 
     // Game grid, which permutation means player wins
     vector<vector<unsigned int>> win_grid_;
