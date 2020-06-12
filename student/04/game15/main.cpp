@@ -25,6 +25,27 @@ using namespace std;
 
 //antaa "random initialization" vaihtoehtot, joko .init avulla väittää seed value tai 
 //.init metodilla väittää vektori, jolla on arvot 1-15 jäejestyksessä
+bool is_misssing_num(vector<unsigned int>& number){
+    vector<unsigned int> for_checkl;
+    for(unsigned int i=1; i<17;++i){
+        for_checkl.push_back(i);
+    }
+
+
+    for(int i=0; i<16; ++i){
+        int not_fount=0;
+        for(int w=0; w<16;++w){
+            if (for_checkl.at(i)!=number.at(w)){
+                ++not_fount;
+            }
+            if (not_fount==16){
+                cout<<"Number "<<for_checkl.at(i)<<" is missing"<<endl;
+                return true;
+            }
+        }
+    }
+    return false;
+}
 bool init_board(Board& g_board)
 {
     string init_mode = "";
@@ -57,15 +78,37 @@ bool init_board(Board& g_board)
                 cin >> input;
                 inputs.push_back(input);
             }
-            return g_board.init(inputs);//vastanottaa vektori, ja palauttaa ture
+            if (!is_misssing_num(inputs)){
+                return g_board.init(inputs);//vastanottaa vektori, ja palauttaa ture
+            }
+            else{
+                return false;
+            }
         }
         cout << "Unknown choice: " << init_mode << std::endl;
     }
     return true;  // This should never be reached
 }
 
+bool is_right_operation(const char& operation){
+    if(operation=='w' || operation=='s' || operation=='a' || operation=='d'){
+        return true;
+    }
+    else{
+        cout<<"Unknown command: "<<operation<<endl;
+        return false;
+    }
+}
 
-// More functions
+bool is_1to15(unsigned int& luku){
+    for(unsigned int i=1; i<16; ++i){
+        if(luku==i){
+            return true;
+        }
+    }
+    cout<<"Invalid number: "<<luku<<endl;
+    return false;
+}
 
 int main()
 {
@@ -83,7 +126,11 @@ int main()
         cout<<"Dir (command, number): ";
         cin>>operation;
         cin>>luku;
-        game_board.move(operation, luku);
+        if (is_right_operation(operation)&& is_1to15(luku)){
+            game_board.move(operation, luku);
+        }
+
+
     }
     // More functionality
 

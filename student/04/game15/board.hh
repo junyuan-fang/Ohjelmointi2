@@ -38,7 +38,7 @@ public:
     // Prints the game grid
     void print() const;
 
-    void move(char operation, unsigned int luku);
+    void move(const char& operation, unsigned int luku);
 
     //check the winning state
     bool is_win();

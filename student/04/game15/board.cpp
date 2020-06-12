@@ -108,7 +108,7 @@ vector< int> Board::return_x_y( unsigned int luku) {
     return {EMPTY};//
 }
 
-void Board :: move(char operation, unsigned int luku){
+void Board :: move(const char& operation, unsigned int luku){
     //sarake indeksi= y , rivi indeksi=x
 
     int y= return_x_y(luku).at(0);
@@ -133,12 +133,12 @@ void Board :: move(char operation, unsigned int luku){
 
     //luvun vaihtaminen
     //vaihtaminen tapahtuu ainoastaan silloin, kun vastaavalla indeksilla on tyhja paikka
-    if (grid_.at(y).at(x)==16){
-        grid_.at(y_alussa).at(x_alussa)=grid_.at(y).at(x);
-        grid_.at(y).at(x)= temp_nu;
+    if ((y<0)or(x<0)or grid_.at(y).at(x)!=16){
+        cout<<"Impossible direction: "<<operation<<endl;
     }
     else{
-        //pass
+        grid_.at(y_alussa).at(x_alussa)=grid_.at(y).at(x);
+        grid_.at(y).at(x)= temp_nu;
     }
 }
 
