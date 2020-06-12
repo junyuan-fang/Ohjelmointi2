@@ -43,6 +43,8 @@ public:
     //check the winning state
     bool is_win();
 
+    bool is_solvable();
+
 private:
     // Shuffles the numbers vector by using seed as a seed value
     void my_shuffle(vector<unsigned int>& numbers, int seed);

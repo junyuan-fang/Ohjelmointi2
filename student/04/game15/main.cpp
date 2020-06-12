@@ -118,6 +118,11 @@ int main()
         return EXIT_FAILURE;
     }
 
+    if(!game_board.is_solvable()){
+        cout<<"Game is not solvable. What a pity."<<endl;
+        return EXIT_FAILURE;
+    }
+
     while(!game_board.is_win()){
         game_board.print();
 

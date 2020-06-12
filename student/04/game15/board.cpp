@@ -27,6 +27,36 @@ Board::Board()
     // Add code when necessary
 }
 
+bool Board::is_solvable(){
+    int inversio=0;
+    for(unsigned int i=2; i<17; i++){
+
+        for (int y=0;y<SIZE;++y){
+            for(int x=0; x<SIZE; ++x){
+                //estitaan inversioita
+                unsigned int luku_inversio_vert=grid_.at(y).at(x);
+                if(luku_inversio_vert==i){
+                    for (int yy=y; yy<SIZE;++yy){
+                        for (int xx=x; xx<SIZE;++xx){
+                            if ( grid_.at(yy).at(xx)<luku_inversio_vert){
+                                inversio++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+    if (inversio%2==0){
+        cout<<"Game is solvable: Go ahead!"<<endl;
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+
 void Board::make_grid(const vector<unsigned int > &number_list){
 //conver vector<unsigned> to vector<vector<unsigned>>
     vector<vector <unsigned int >> grid;
