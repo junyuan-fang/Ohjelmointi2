@@ -20,8 +20,6 @@ using namespace std;
 
 const int EMPTY = 16;
 const unsigned int PRINT_WIDTH = 5;
-const int RIVI=4;
-const int SARAKE=RIVI;
 
 Board::Board()
 {
@@ -32,9 +30,9 @@ void Board::make_grid(const vector<unsigned int > &number_list){
 //conver vector<unsigned> to vector<vector<unsigned>>
     vector<vector <unsigned int >> grid;
     int indeksi=0;
-    for (int rivi=0;rivi<RIVI;++rivi){
+    for (int rivi=0;rivi<SIZE;++rivi){
         vector <unsigned int > rivi_vector;
-        for (int sarake=0;sarake<SARAKE;++sarake){
+        for (int sarake=0;sarake<SIZE;++sarake){
             rivi_vector.push_back(number_list.at(indeksi));
             indeksi++;
         }
@@ -97,3 +95,41 @@ void Board::my_shuffle(vector<unsigned int> &numbers, int seed)
     }
 }
 
+vector< int> Board::return_x_y( unsigned int luku) {
+    for ( int y=0; y<SIZE;++y){
+        for ( int x =0 ; x<SIZE; ++x){
+            if (grid_.at(y).at(x)==luku){
+                return {y,x};
+            }
+        }
+    }
+    return {EMPTY};
+}
+
+void Board :: move(char operation, unsigned int luku){
+    //sarake indeksi= y , rivi indeksi=x
+
+    int y= return_x_y(luku).at(0);
+    int x= return_x_y(luku).at(1);
+
+    int x_alussa=x;
+    int y_alussa=y;
+    int temp_nu=grid_.at(y_alussa).at(x_alussa);
+
+    if (operation=='a'){
+        --x;
+    }
+    else if (operation=='d'){
+        ++x;
+    }
+    else if (operation=='w'){
+        ++y;
+    }
+    else if (operation=='s'){
+        --y;
+    }
+
+    //luvun vaihtaminen
+    grid_.at(y_alussa).at(x_alussa)=grid_.at(y).at(x);
+    grid_.at(y).at(x)= temp_nu;
+}

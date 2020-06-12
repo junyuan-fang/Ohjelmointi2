@@ -76,6 +76,14 @@ int main()
     }
 
     game_board.print();
+
+    char operation=' ';
+    int luku=0;
+    cout<<"Dir (command, number): ";
+    cin>>operation;
+    cin>>luku;
+    game_board.move(operation, luku);
+    game_board.print();
     // More functionality
 
     return EXIT_SUCCESS;

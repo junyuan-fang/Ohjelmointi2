@@ -38,16 +38,19 @@ public:
     // Prints the game grid
     void print() const;
 
-    // More methods
+    void move(char operation, unsigned int luku);
 
 private:
     // Shuffles the numbers vector by using seed as a seed value
     void my_shuffle(vector<unsigned int>& numbers, int seed);
+
+    //change vector<unsigned> to vector<vector<unsigned>>
     void make_grid(const vector<unsigned> &number_list);
 
     // Game grid for the 15 puzzle
     vector<vector<unsigned int>> grid_;
 
+    vector<int> return_x_y( unsigned int luku) ;
     // More attributes/methods
 };
 
