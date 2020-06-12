@@ -78,6 +78,10 @@ bool init_board(Board& g_board)
                 cin >> input;
                 inputs.push_back(input);
             }
+
+//            inputs={2,5,12,16,7,1,3,6,11,14,8,15,4,9,10,13};
+            //inputs={1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,15};
+//            inputs={1,2,3,4,9,6,7,8,5,16,12,11,14,13,15,10};
             if (!is_misssing_num(inputs)){
                 return g_board.init(inputs);//vastanottaa vektori, ja palauttaa ture
             }

@@ -42,13 +42,15 @@ bool Board::is_solvable(){
         }
     }
     // luku 16 oikeaseen kulmaan tarvittavat siirtymiset
+    cout<<inversio<<endl;
     for(int y=0;y<SIZE;++y){
         for(int x=0;x<SIZE;++x){
-            if (grid_.at(y).at(x)==16 && ((x==3 && y!=2)||(x==3 && y!=2))){
+            if (grid_.at(y).at(x)==16 && !((x==3 && y==2)|| (x==2 && y==3))){
                 inversio+=(SIZE-1-y)+(SIZE-1-x);
             }
         }
     }
+    cout<<inversio<<endl;
     if (inversio%2==0){
         cout<<"Game is solvable: Go ahead!"<<endl;
         return true;
