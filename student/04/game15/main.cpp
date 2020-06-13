@@ -23,6 +23,8 @@
 #include <iostream>
 using namespace std;
 
+bool is_misssing_num(vector<unsigned int>& number);
+
 // Alustus, funktion avulla luodaan "Game grid"
 // (Vaihtoehto 1.) "random initialization" väittää seed value
 //  metodille init "Game grid" luvut satunnaisjarjestyksessa
