@@ -23,15 +23,65 @@
 #include <iostream>
 using namespace std;
 
-//antaa "random initialization" vaihtoehtot, joko .init avulla väittää seed value tai 
-//.init metodilla väittää vektori, jolla on arvot 1-15 jäejestyksessä
+// Alustus, funktion avulla luodaan "Game grid"
+// (Vaihtoehto 1.) "random initialization" väittää seed value
+//  metodille init "Game grid" luvut satunnaisjarjestyksessa
+// (vaihtoehto 2.) Itse syottaman luku 1-16
+// init metodille väitetään vektori "vector <unsigned int>"
+
+//:param g_board: Board, olio
+//:return: ture: Jos "Game geid" luominen onnistuu.
+//:return: false: vastaavasti
+bool init_board(Board& g_board){
+    string init_mode = "";
+    while(init_mode != "y" and init_mode != "Y" and
+          init_mode != "n" and init_mode != "N"){
+        cout << "Random initialization (y/n): ";
+        getline(cin, init_mode);
+        if(init_mode == "y" or init_mode == "Y"){
+            cout << "Enter a seed value (or an empty line): ";
+            string seed = "";
+            getline(cin, seed);
+            if(seed == ""){
+                g_board.init(time(0));
+            }
+            else{
+                g_board.init(stoi(seed));
+            }
+            return true;
+        }
+        if(init_mode == "n" or init_mode == "N"){
+            cout << "Enter the numbers 1-16 in a desired order "
+                    "(16 means empty):" << std::endl;
+            vector<unsigned int> inputs;
+
+            for(unsigned int i = 0; i < SIZE * SIZE; ++i){
+                unsigned int input = 0;
+                cin >> input;
+                inputs.push_back(input);
+            }
+
+            if (!is_misssing_num(inputs)){
+                //vastanottaa oikean pituisen vektorin
+                return g_board.init(inputs);//palauttaa totusarvo True
+            }
+            else{
+                return false;
+            }
+        }
+        cout << "Unknown choice: " << init_mode << std::endl;
+    }
+    return true;  // This should never be reached
+}
+
+// Tulostaa puuttuvan ensimmainen luku suuruusjarjestyksesta(jos puuttu)
+//:return: true : Jos puuttuu lukua suuruusjarjestyksesta
+//:return: false: vastaavasti
 bool is_misssing_num(vector<unsigned int>& number){
     vector<unsigned int> for_checkl;
     for(unsigned int i=1; i<17;++i){
         for_checkl.push_back(i);
     }
-
-
     for(int i=0; i<16; ++i){
         int not_fount=0;
         for(int w=0; w<16;++w){
@@ -46,54 +96,10 @@ bool is_misssing_num(vector<unsigned int>& number){
     }
     return false;
 }
-bool init_board(Board& g_board)
-{
-    string init_mode = "";
-    while(init_mode != "y" and init_mode != "Y" and init_mode != "n" and init_mode != "N")
-    {
-        cout << "Random initialization (y/n): ";
-        getline(cin, init_mode);
-        if(init_mode == "y" or init_mode == "Y")
-        {
-            cout << "Enter a seed value (or an empty line): ";
-            string seed = "";
-            getline(cin, seed);
-            if(seed == "")
-            {
-                g_board.init(time(0));
-            }
-            else
-            {
-                g_board.init(stoi(seed));
-            }
-            return true;
-        }
-        if(init_mode == "n" or init_mode == "N")
-        {
-            cout << "Enter the numbers 1-16 in a desired order (16 means empty):" << std::endl;
-            vector<unsigned int> inputs;
-            for(unsigned int i = 0; i < SIZE * SIZE; ++i)
-            {
-                unsigned int input = 0;
-                cin >> input;
-                inputs.push_back(input);
-            }
 
-//            inputs={2,5,12,16,7,1,3,6,11,14,8,15,4,9,10,13};
-            //inputs={1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,15};
-//            inputs={1,2,3,4,9,6,7,8,5,16,12,11,14,13,15,10};
-            if (!is_misssing_num(inputs)){
-                return g_board.init(inputs);//vastanottaa vektori, ja palauttaa ture
-            }
-            else{
-                return false;
-            }
-        }
-        cout << "Unknown choice: " << init_mode << std::endl;
-    }
-    return true;  // This should never be reached
-}
-
+// Tulostaa huomautusteksti jos "operation" ei tunnistaa
+// return :: ture : jos "operation" kuuluu "w", "s", "a" tai "d"
+//          false: vastaavasti
 bool is_right_operation(const string& operation){
     if(operation=="w" || operation=="s" || operation=="a" || operation=="d"){
         return true;
@@ -104,6 +110,8 @@ bool is_right_operation(const string& operation){
     }
 }
 
+//:return: ture : jos annetun luku on kokonnaisluku, 1<=luku<=15
+//:retirn: false: vastaavasti
 bool is_1to15(unsigned int& luku){
     for(unsigned int i=1; i<16; ++i){
         if(luku==i){
@@ -117,6 +125,8 @@ bool is_1to15(unsigned int& luku){
 int main()
 {
     Board game_board; 
+    // Jos kayttaja noudattaa ohjetta, ja syottaa oikein
+    // Virhe ei esiintyisi
     if(!init_board(game_board))
     {
         return EXIT_FAILURE;
@@ -143,10 +153,7 @@ int main()
             game_board.move(operation, luku);
         }
         game_board.print();
-
-
     }
-    // More functionality
 
     cout<<"You won!"<<endl;
     return EXIT_SUCCESS;

@@ -3,10 +3,10 @@
  * Class: Board
  *
  * Program author ( Fill with your own info )
- * Name: Teemu Teekkari
- * Student number: 123456
- * UserID: teekkart ( Necessary due to gitlab folder naming. )
- * E-Mail: teemu.teekkari@tuni.fi
+ * Name: Junyuan Fang
+ * Student number: 292042
+ * UserID: fqjufa ( Necessary due to gitlab folder naming. )
+ * E-Mail: junyuan.fang@tuni.fi
  *
  * Notes:
  *
@@ -23,25 +23,28 @@ const unsigned int PRINT_WIDTH = 5;
 
 Board::Board()
 {
+    //Yksiulotteisella grid_:lla on helpompi laskea
+    //inversioita "ratkeavuudessa". Siksi luodaan
     make_win_grid();
-    // Add code when necessary
 }
 
-bool Board::is_solvable(){
+bool Board::is_solvable() const{
+    //hyodynnetaan inversion pariteetista
     int inversio=0;
     for(unsigned int i=1; i<16; i++){
         for (int y=0;y<16;++y){
             //estitaan inversioita
             if(one_dimesion_grid_.at(y)==i){
+                //kaydaan alkioita lapi siita lahtien
                 for (int yy=y; yy<16;++yy){
-                    if ( one_dimesion_grid_.at(yy)<i){
+                    if ( one_dimesion_grid_.at(yy)<i){//inversio loytyy
                         ++inversio;
                     }
                 }
             }
         }
     }
-    // luku 16 oikeaseen kulmaan tarvittavat siirtymiset
+    // luku 16 paikasta oikeaseen alakulmaan tarvittavien askelten lukumaara
     for(int y=0;y<SIZE;++y){
         for(int x=0;x<SIZE;++x){
             if (grid_.at(y).at(x)==16 && !((x==3 && y==2)|| (x==2 && y==3))){
@@ -59,7 +62,8 @@ bool Board::is_solvable(){
 }
 
 void Board::make_grid(const vector<unsigned int > &number_list){
-//conver vector<unsigned> to vector<vector<unsigned>>
+// convert vector<unsigned> to vector<vector<unsigned>>
+// build "one_dimesion_grid_" for later checking game's solvability 
     one_dimesion_grid_=number_list;
     vector<vector <unsigned int >> grid;
     int indeksi=0;
@@ -74,7 +78,7 @@ void Board::make_grid(const vector<unsigned int > &number_list){
     grid_=grid;
 }
 
-void Board::init(const int seed)
+void Board::init(const int& seed)
 //alustus, tässä käytetään <random> eli 1-15 ovat satunnaisessa järjestyksessä.
 {
     vector<unsigned> numbers(16,0);
@@ -88,13 +92,14 @@ void Board::init(const int seed)
 
 
 bool Board::init(const vector<unsigned int> &numbers)
-//alustaa ohjelman käyttäjä antaman 1-16 luvuiden järjestyksella
+//Alustaa Board olion käyttäjä antaman 1-16 luvuiden järjestyksella
 {
     make_grid(numbers);
     return true;
 }
 
 void Board::print() const
+//Kaskiulotteinen tulostus
 {
     for(unsigned int x = 0; x < SIZE; ++x)
     {
@@ -116,8 +121,7 @@ void Board::print() const
     cout << string(PRINT_WIDTH * SIZE + 1, '-') << endl;
 }
 
-void Board::my_shuffle(vector<unsigned int> &numbers, int seed)
-{
+void Board::my_shuffle(vector<unsigned int> &numbers, const int& seed){
     default_random_engine randomEng(seed);
     uniform_int_distribution<int> distr(0, numbers.size() - 1);
     for(unsigned int i = 0; i < numbers.size(); ++i)
@@ -129,7 +133,8 @@ void Board::my_shuffle(vector<unsigned int> &numbers, int seed)
     }
 }
 
-vector< int> Board::return_x_y( unsigned int luku) {
+vector< int> Board::return_x_y( unsigned int luku) const{
+    //kaytetaan metodi "move" kanssa.
     for ( int y=0; y<SIZE;++y){
         for ( int x =0 ; x<SIZE; ++x){
             if (grid_.at(y).at(x)==luku){
@@ -137,11 +142,12 @@ vector< int> Board::return_x_y( unsigned int luku) {
             }
         }
     }
-    return {EMPTY};//
+    return {};//poikkeus tilanne, mutta ei ikina tapahtuisi
 }
 
-void Board :: move(const string& operation, unsigned int luku){
-    //sarake indeksi= y , rivi indeksi=x
+void Board :: move(const string& operation, const unsigned int& luku){
+    //  y = sarake indeksi
+    //  x = rivi indeksi
 
     int y= return_x_y(luku).at(0);
     int x= return_x_y(luku).at(1);
@@ -162,9 +168,9 @@ void Board :: move(const string& operation, unsigned int luku){
     else if (operation=="s"){
         ++y;
     }
-
-    //luvun vaihtaminen
-    //vaihtaminen tapahtuu ainoastaan silloin, kun vastaavalla indeksilla on tyhja paikka
+    //  luvun vaihtaminen
+    //  vaihtaminen tapahtuu ainoastaan silloin,
+    //  kun vastaavalla indeksilla on tyhja paikka
     if ((y<0)or(x<0)or grid_.at(y).at(x)!=16){
         cout<<"Impossible direction: "<<operation<<endl;
     }
@@ -187,13 +193,15 @@ void Board::make_win_grid(){
     }
     win_grid_=win_grid;
 }
-bool Board::is_win(){
+
+bool Board::is_win() const{
     int right_times=0;
+    // y = sarake indeksi
+    // x = rivi indeksi
     for ( int y=0; y<SIZE;++y){
         for ( int x =0 ; x<SIZE; ++x){
             if (grid_.at(y).at(x)==win_grid_.at(y).at(x)){
                 ++right_times;
-
             }
         }
     }

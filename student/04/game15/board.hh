@@ -28,42 +28,53 @@ public:
     Board();
 
     // Initializes the grid randomly based on the seed
-    void init(int seed);
+    void init(const int& seed);
 
     // Initialized the grid with the values of numbers vector
     // Returns false, if the given vector does not contain all the numbers [1..16],
     // otherwise returns true
     bool init(const vector<unsigned int>& numbers);
 
-    // Prints the game grid
+    // Prints the game grid(2D)
     void print() const;
 
-    void move(const string& operation, unsigned int luku);
+    // Liikkuttaa laattaa, liikkuminen onnistuu silloin, kun kohdepaikalla on tyhjä paikka
+    // Print the information to the user, if the moving is not posible
+    void move(const string& operation, const unsigned int& luku);
 
-    //check the winning state
-    bool is_win();
+    // check the winning state
+    bool is_win() const;
 
-    bool is_solvable();
+    // Palauttaa ratkaisevuuden totuusarvoa, ja tulostaa ratkaisevuuden tietoa konsolile
+    bool is_solvable() const;
 
 private:
     // Shuffles the numbers vector by using seed as a seed value
-    void my_shuffle(vector<unsigned int>& numbers, int seed);
+    void my_shuffle(vector<unsigned int>& numbers, const int& seed);
 
-    //change vector<unsigned> to vector<vector<unsigned>>
+    //1.Tallentaa yksiulotteinen "Game grid" olion jasenmuuttujaan one_dimesion_grid_
+    //2.Muuttaa "Game grid" yksiulotteisesta kaksiulotteiseen,
+    //  ja tallennetaan jasenmuuttujaan "grid_".
     void make_grid(const vector<unsigned> &number_list);
 
+    // Luodaan "Game grid"(tallennetaan jasenmuuttujaan win_grid_)
+    // myöhemmin kaytettavan pelivoiton("is_win") tarkistusta varten
     void make_win_grid();
 
-    // Game grid for the 15 puzzle
+    // Funktio paluttaa luku koordinaattistossa(grid_) olevan x- ja y-arvot
+    // return : vector{x, y}
+    vector<int> return_x_y( unsigned int luku) const ;
+
+    // Game grid for the 15 puzzle, kaksiulotteinen.
     vector<vector<unsigned int>> grid_;
 
+    // Game grid for the 15 puzzle, yksiulotteinen.
     vector<unsigned int> one_dimesion_grid_;
 
-    // Game grid, which permutation means player wins
+    // Game grid, which shows the  winning permutation
     vector<vector<unsigned int>> win_grid_;
 
-    vector<int> return_x_y( unsigned int luku) ;
-    // More attributes/methods
+
 };
 
 #endif // BOARD_HH
