@@ -29,13 +29,13 @@ int main()
         ofstream outfile_var(out_file_name);
         string rivi;
         int i=1;
-        while(getline(cin,rivi)){
+        while(getline(infile_var,rivi)){
             outfile_var<<i<<" "<<rivi<<endl;
             ++i;
         }
-        outfile_var.close;
+        outfile_var.close();
 
     }
-    infile_var.close()
+    infile_var.close();
 
 }
