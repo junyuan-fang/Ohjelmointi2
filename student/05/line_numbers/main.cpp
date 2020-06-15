@@ -22,7 +22,7 @@ int main()
 
     ifstream infile_var(in_file_name);
     if (! infile_var){
-        cout<<"Error! The file not_a_file.input cannot be opened."<<endl;
+        cout<<"Error! The file "<< in_file_name<<" cannot be opened."<<endl;
         return EXIT_FAILURE;
     }
     else{
