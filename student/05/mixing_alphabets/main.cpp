@@ -14,7 +14,7 @@ string:: iterator iteraattori( string& txt, const string& operaattori ){
     else if (operaattori=="-"){
         return txt.begin()+pituus-2;
     }
-
+    return txt.begin();//nerver will be reached
 }
 int main()
 {
