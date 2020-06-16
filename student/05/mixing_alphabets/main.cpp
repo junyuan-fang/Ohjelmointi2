@@ -12,7 +12,7 @@ string:: iterator iteraattori( string& txt, const string& operaattori ){
         return txt.begin()+1;
     }
     else if (operaattori=="-"){
-        return txt.begin()+pituus-2;
+        return txt.end()-1;
     }
     return txt.begin();//nerver will be reached
 }
