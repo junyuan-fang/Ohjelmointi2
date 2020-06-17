@@ -46,7 +46,7 @@ int main()
 
     ifstream tiedostomuutuja(input_files);
     if (!tiedostomuutuja){
-        cout<<"Error! The file not_a_file.txt cannot be opened."<<endl;
+        cout<<"Error! The file "<<input_files<<" cannot be opened."<<endl;
         return EXIT_FAILURE;
     }
 
