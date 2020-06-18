@@ -20,9 +20,10 @@ void print_vertical(unsigned int num)
             substruction*=10;
         }
         if((num-substruction)<=9){
-            for(int i=0;i<(int)num_str.length()-1;++i){
-                cout<<"0"<<endl;
-            }
+            cout<<"0"<<endl;
+//            for(int i=0;i<(int)num_str.length()-1;++i){
+//                cout<<"0"<<endl;
+//            }
         }
         return print_vertical(num-substruction);
     }
