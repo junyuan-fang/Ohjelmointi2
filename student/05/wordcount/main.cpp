@@ -32,7 +32,9 @@ void paivitta_sa_tiedot(map<string, vector<int>>& sanatiedot,const string& sana,
         sanatiedot.insert({sana,{rivi_luku}});
     }
     else{
-        sanatiedot.at(sana).push_back(rivi_luku);
+        if(sanatiedot.at(sana).at(sanatiedot.at(sana).size()-1)!=rivi_luku){
+            sanatiedot.at(sana).push_back(rivi_luku);
+        }
     }
 }
 
