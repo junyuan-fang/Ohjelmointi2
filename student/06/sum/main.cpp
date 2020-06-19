@@ -42,6 +42,16 @@ int sum_recursive(std::vector<int> v){
 
     // Add your implementation here
 }
+int sum_recursive(std::vector<int> v,int tulos){
+    if(v.empty()){
+        return tulos;
+    }
+    else{
+        int lisattava=v.at(0);
+        v.erase(v.begin());
+        return sum_recursive(v,tulos+lisattava);
+    }
+}
 
 // Do not modify rest of the code, or the automated testing won't work.
 #ifndef UNIT_TESTING
@@ -56,6 +66,7 @@ int main()
         integers.push_back(stoi(s));
     }
 
-    std::cout << "Sum: " << sum_recursive(integers) << std::endl;
+    std::cout << "Sum: " << sum_recursive(integers,0) << std::endl;
+
 }
 #endif
