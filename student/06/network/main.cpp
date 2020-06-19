@@ -67,7 +67,7 @@ unsigned int depth(const map<string, vector<string>>& nimi_listA,
                    int& tulos,
                    int& max){
     if(nimi_listA.find(tunniste)==nimi_listA.end()){
-        return 0;
+        return 1;
     }
 
     else{
