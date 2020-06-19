@@ -74,6 +74,7 @@ unsigned int depth(const map<string, vector<string>>& nimi_listA,
         vector <string> vektori=nimi_listA.find(tunniste)->second;
         for (string tunniste_i:vektori){
             depth(nimi_listA,tunniste_i,++tulos,max);
+            cout<<tulos<<endl;
             if(max<tulos){
                 max=tulos;
                 tulos=1;
