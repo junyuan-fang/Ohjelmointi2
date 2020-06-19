@@ -33,7 +33,7 @@ std::vector<std::string> split(const std::string& s, const char delimiter, bool 
 void print_suhde(map<string,vector<string>>& nimi_lista,
                  string tunniste,
                  int _kerta=0,
-                 const char  merkki='-'){
+                 const char  merkki='.'){
 
     if(nimi_lista.find(tunniste)==nimi_lista.end()){
         cout<<string(_kerta*2,merkki)<<tunniste<<endl;
@@ -76,7 +76,7 @@ unsigned int depth(const map<string, vector<string>>& nimi_listA,
             depth(nimi_listA,tunniste_i,++tulos,max);
             if(max<tulos){
                 max=tulos;
-                tulos=0;
+                tulos=1;
             }
         }
     }
