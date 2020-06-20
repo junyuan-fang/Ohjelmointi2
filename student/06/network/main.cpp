@@ -73,12 +73,11 @@ unsigned int depth(const map<string, vector<string>>& nimi_listA,
     else{
         vector <string> vektori=nimi_listA.find(tunniste)->second;
         for (string tunniste_i:vektori){
-            cout<<tunniste<<" pituus "<<tulos<<endl;
             depth(nimi_listA,tunniste_i,++tulos,max);
             if(max<=tulos){
                 max=tulos;
-                tulos=0;
             }
+            --tulos;
         }
     }
     return max;
