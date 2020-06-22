@@ -82,7 +82,8 @@ string tiedosdon_lukeminen(const string& tiedostonimi,map<string,set<book>>&tall
     }
     return "SUCCESS";
 }
-
+// alkaa nama funktiot, jotka ovat kayttoliittymalle
+//ja nama funktiot ovat jarjestyksessa
 
 int main()
 {   string tiedostonimi;
@@ -95,14 +96,29 @@ int main()
         return EXIT_FAILURE;
     }
     else{//jos onnistuu
-        for (auto kirjasto : tallennetut_tiedot){
-            cout<<">"<<kirjasto.first<<endl;
-            for (auto kirja: kirjasto.second){
-                cout<<"------"<<kirja.author<<endl;
-                cout<<"------------------"<<kirja.title<<"                "<<kirja.reservations<<endl;
+        while (true){
+            string order;
+            cout<<"> ";
+            cin>>order;
+            if(order=="quit"){
+                return  EXIT_SUCCESS;
+            }
+            else if(order=="libraries"){
+
+            }
+            else if(order=="material"){
+
+            }
+            else if(order=="books"){
+
+            }
+            else if (order=="reservable"){
+
+            }
+            else if (order=="loanable"){
+
             }
         }
-        cout<<tallennetut_tiedot.at("Metso").size()<<endl;
     }
 
     
