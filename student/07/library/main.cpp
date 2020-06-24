@@ -51,10 +51,12 @@ void tiedosdon_lukeminen(const string& tiedostonimi,map<string,set<book>>&tallen
     ifstream tiedostomuuttuja(tiedostonimi);
     if(tiedostomuuttuja){
         string rivi;
+        int succeed_reading=0;
         while (getline(tiedostomuuttuja,rivi)){
             book kirja;
             vector<string> parts=split(rivi,';');
             if (parts.size()!=4){//jos ei ole vaaditussa muodossa
+                cout<<"wrong size"<<endl;
                 cout<<"Error: empty field"<<endl;
                 exit(1);
             }
@@ -78,13 +80,16 @@ void tiedosdon_lukeminen(const string& tiedostonimi,map<string,set<book>>&tallen
                     tallennetut_tiedot.at(kirjastonimi).insert(kirja);
                 }
             }
-       }
-        if(tiedostomuuttuja.eof()){
+            ++succeed_reading;
+        }
+        if(succeed_reading==0){
             cout<<"Error: empty field"<<endl;
+            exit(1);
         }
     }
     else{
         cout<<"Error: the input file cannot be opened"<<endl;
+        exit(1);
     }
 }
 // alkaa nama funktiot, jotka ovat kayttoliittymalle
