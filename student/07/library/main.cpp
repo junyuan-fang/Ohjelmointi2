@@ -56,7 +56,6 @@ void tiedosdon_lukeminen(const string& tiedostonimi,map<string,set<book>>&tallen
             book kirja;
             vector<string> parts=split(rivi,';');
             if (parts.size()!=4){//jos ei ole vaaditussa muodossa
-                cout<<"wrong size"<<endl;
                 cout<<"Error: empty field"<<endl;
                 exit(1);
             }
