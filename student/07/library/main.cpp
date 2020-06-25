@@ -136,7 +136,7 @@ void kirjojen_tulostus(const string& kirjasto_nimi,
 // ja lyhyimman varauksen kirjastojen nimet
 void reservable_printing(const string& kirjan_nimi, const collected_data& talletetut){
     vector<string> kirja_vec_struc;
-    int min_reservation=1;
+    int min_reservation;
     int esiityminen=0;
     for(auto talle: talletetut){//kaydaan map lapi
         string kirjaston_nimi=talle.first;
@@ -175,7 +175,12 @@ void reservable_printing(const string& kirjan_nimi, const collected_data& tallet
         return;
     }
     else{
-        cout<<min_reservation<<" reservations"<<endl;
+        if(min_reservation==0){
+            cout<<"on the shelf"<<endl;
+        }
+        else{
+            cout<<min_reservation<<" reservations"<<endl;
+        }
         for (string  nimi: kirja_vec_struc){
             cout<<"--- "<<nimi<<endl;
             }
