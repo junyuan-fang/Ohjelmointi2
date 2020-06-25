@@ -136,7 +136,7 @@ void kirjojen_tulostus(const string& kirjasto_nimi,
 // ja lyhyimman varauksen kirjastojen nimet
 void reservable_printing(const string& kirjan_nimi, const collected_data& talletetut){
     vector<string> kirja_vec_struc;
-    int min_reservation;
+    int min_reservation=0;
     int esiityminen=0;
     for(auto talle: talletetut){//kaydaan map lapi
         string kirjaston_nimi=talle.first;
