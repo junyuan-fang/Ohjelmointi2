@@ -1,9 +1,11 @@
-#include <iostream>
+﻿#include <iostream>
 #include <map>
 #include <vector>
 #include <set>
 #include <fstream>
 #include <string>
+#include <algorithm>
+#include <utility>
 
 //<kirjasto>;<tekija>;<kirjan_nimi>;<varausten_maara>
 using namespace std;
@@ -54,7 +56,7 @@ void tiedosdon_lukeminen(const string& tiedostonimi,map<string,set<book>>&tallen
         int succeed_reading=0;
         while (getline(tiedostomuuttuja,rivi)){
             book kirja;
-            vector<string> parts=split(rivi,';');
+            vector<string> parts=split(rivi,';',true);
             if (parts.size()!=4){//jos ei ole vaaditussa muodossa
                 cout<<"Error: empty field"<<endl;
                 exit(1);
@@ -63,7 +65,7 @@ void tiedosdon_lukeminen(const string& tiedostonimi,map<string,set<book>>&tallen
                 kirja.author=parts.at(1);
                 kirja.title=parts.at(2);
                 if(parts.at(3)=="on-the-shelf"){
-                    kirja.reservations=1;
+                    kirja.reservations=0;
                 }
                 else{
                     kirja.reservations=stoi(parts.at(3));
@@ -116,8 +118,8 @@ void kirjojen_tulostus(const string& kirjasto_nimi,
         set<book> kirjat=tallennetut.at(kirjasto_nimi);
         for( book kirja : kirjat){
             if(kirja.author==tekija){
-                if(kirja.reservations==1){
-                    cout<<kirja.title<<" --- one the shelf"<<endl;
+                if(kirja.reservations==0){
+                    cout<<kirja.title<<" --- on the shelf"<<endl;
                 }
                 else{
                     cout<<kirja.title<<" --- "<<kirja.reservations<<" reservations"<<endl;
@@ -130,36 +132,57 @@ void kirjojen_tulostus(const string& kirjasto_nimi,
         }
     }
 }
+// Tulostaa kijan_nimi liittyvan pienimman varausksen luku,
+// ja lyhyimman varauksen kirjastojen nimet
 void reservable_printing(const string& kirjan_nimi, const collected_data& talletetut){
-    set<string> kirjastot;
-    int reservable=0;
+    vector<string> kirja_vec_struc;
+    int min_reservation=1;
     int esiityminen=0;
     for(auto talle: talletetut){//kaydaan map lapi
-        for(book book_struct: talle.second){
-            if(book_struct.title==kirjan_nimi){
-                reservable+=book_struct.reservations;
-                kirjastot.insert(talle.first);
+        string kirjaston_nimi=talle.first;
+        set<book>:: iterator iter=talle.second.begin();
+
+        while(iter!=talle.second.end()){//kaydaan set<book> lapi
+            int curret_reservation=iter->reservations;
+
+            if(iter->title==kirjan_nimi){
                 esiityminen++;
-            }           
+                if(kirja_vec_struc.empty()){
+                    kirja_vec_struc.push_back(kirjaston_nimi);
+                    min_reservation=curret_reservation;
+                }
+                else if(!kirja_vec_struc.empty()&&
+                        curret_reservation<min_reservation){
+                    kirja_vec_struc.erase(kirja_vec_struc.begin(),kirja_vec_struc.end() );
+                    kirja_vec_struc.push_back( kirjaston_nimi);
+                    min_reservation=curret_reservation;
+                }
+                else if(!kirja_vec_struc.empty()&&
+                        curret_reservation==min_reservation){
+                    kirja_vec_struc.push_back( kirjaston_nimi);
+                    min_reservation=curret_reservation;
+                }
+            }
+            ++iter;
         }
     }
-    cout<<kirjan_nimi<<endl;
     if(esiityminen==0){//jos kirja on esiintynyt
         cout<<"Book is not a library book."<<endl;
         return;
     }
-    else if (reservable>=100){
+    else if (min_reservation>=100){
         cout<<"The book is not reservable from any library."<<endl;
         return;
     }
     else{
-        cout<<reservable<<" reservations"<<endl;
-        for (string nimi: kirjastot){
+        cout<<min_reservation<<" reservations"<<endl;
+        for (string  nimi: kirja_vec_struc){
             cout<<"--- "<<nimi<<endl;
             }
     }
 
 }
+
 void lainava_tulostus(const collected_data& tallennetut_tiedot){
     set<string > tulostettava_set;
 
@@ -167,7 +190,7 @@ void lainava_tulostus(const collected_data& tallennetut_tiedot){
         for(book kirja:talle_rivi.second){
             string tulostettava_rivi;
             tulostettava_rivi=kirja.author+": "+kirja.title;
-            if(kirja.reservations==1){//jos on the shelf
+            if(kirja.reservations==0){//jos on the shelf
                 tulostettava_set.insert(tulostettava_rivi);//tulostettavn set on tehty
             }
         }
