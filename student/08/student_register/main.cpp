@@ -97,11 +97,11 @@ void save_file(const string& file_name, const map<string,Student*> mp){
     ofstream tiedostomuttuja(file_name);
     for (pair<string, Student*> pairs: mp){
         Student s=*(pairs.second);
-        tiedostomuttuja << s.student_number << " " << s.user_id << std::endl
-                  << s.name << std::endl
-                  << s.phone_number << std::endl
-                  << s.email << std::endl
-                  << s.skype << std::endl << std::endl;
+        tiedostomuttuja << s.student_number << ";" << s.user_id << ";"
+                  << s.name << ";"
+                  << s.phone_number << ";"
+                  << s.email << ";"
+                  << s.skype <<endl;
     }
 
     tiedostomuttuja.close();
@@ -170,7 +170,8 @@ int main() {
                     }
                     else{
                         change_num(student_numbers,parts[1],new_num);
-                        save_file(file_name,student_numbers);
+                        save_file(file_name,user_ids);
+                        cout<<endl;
                     }
                 }
                 else{
