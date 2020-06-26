@@ -236,6 +236,7 @@ void tiedosdon_lukeminen(const string& tiedostonimi,
             cout<<"Error: empty field"<<endl;
             exit(1);
         }
+        tiedostomuuttuja.close();
     }
     else{
         cout<<"Error: the input file cannot be opened"<<endl;
