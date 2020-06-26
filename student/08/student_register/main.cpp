@@ -165,13 +165,14 @@ int main() {
                     string new_num;
                     cout<<"Enter a new phone number: ";
                     getline(cin,new_num);
+                    cout<<endl;
+
                     if(!is_valid_phone_number(new_num)){
                             continue;
                     }
                     else{
                         change_num(student_numbers,parts[1],new_num);
                         save_file(file_name,user_ids);
-                        cout<<endl;
                     }
                 }
                 else{
