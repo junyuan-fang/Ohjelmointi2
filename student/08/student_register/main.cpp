@@ -96,7 +96,12 @@ void change_num(map<string,Student*>&student_numbers,const string& stu_num,const
 void save_file(const string& file_name, const map<string,Student*> mp){
     ofstream tiedostomuttuja(file_name);
     for (pair<string, Student*> pairs: mp){
-        print_data(*(pairs.second));
+        Student s=*(pairs.second);
+        tiedostomuttuja << s.student_number << " " << s.user_id << std::endl
+                  << s.name << std::endl
+                  << s.phone_number << std::endl
+                  << s.email << std::endl
+                  << s.skype << std::endl << std::endl;
     }
 
     tiedostomuttuja.close();
