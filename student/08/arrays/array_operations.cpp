@@ -8,7 +8,7 @@ using namespace std;
  * return value: the greatest element of the array
  */
 int greatest_v1(int* itemptr, int size){
-    int greatest_num=0;
+    int greatest_num=*itemptr;
     int* flag= itemptr;
     while(itemptr<flag+size){
         if(*itemptr>=greatest_num){
@@ -27,7 +27,7 @@ int greatest_v1(int* itemptr, int size){
  * return value: the greatest element of the array
  */
 int greatest_v2(int* itemptr, int* endptr){
-    int greatest_num=0;
+    int greatest_num=*itemptr;
     while (itemptr<endptr){
         if(*itemptr>=greatest_num){
             greatest_num=*itemptr;
