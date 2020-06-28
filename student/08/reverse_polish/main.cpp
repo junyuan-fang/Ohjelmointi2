@@ -1,12 +1,5 @@
 #include <iostream>
-#include <map>
-#include <set>
-#include <vector>
-#include <algorithm>
 using namespace std;
-void ending(){
-    exit(0);
-}
 int main(){
     char i;
     int integer;
@@ -14,6 +7,10 @@ int main(){
     int* osoitin=array;
     int index=0;
     int operators=0;
+
+    cout<<"Input an expression in reverse Polish notation (end with #):"<<endl;
+    cout<<"EXPR> ";
+
     while (cin>>i&&i!='#'){
         if (index==0 && !isdigit(i)){
             cout<<"Error: Expression must start with a number"<<endl;
