@@ -25,15 +25,15 @@ int main(){
             operators++;
 
             if (i=='+'){
-                *(osoitin-2)=*(osoitin-1)+*(osoitin-2);
+                *(osoitin-2)=*(osoitin-2)+*(osoitin-1);
                 osoitin-=2;
             }
             else if (i=='-'){
-                *(osoitin-2)=*(osoitin-1)-*(osoitin-2);
+                *(osoitin-2)=*(osoitin-2)-*(osoitin-1);
                 osoitin-=2;
             }
             else if (i=='*'){
-                *(osoitin-2)=*(osoitin-1)**(osoitin-2);
+                *(osoitin-2)=*(osoitin-2)**(osoitin-1);
                 osoitin-=2;
             }
             else if (i=='/'){
@@ -42,7 +42,7 @@ int main(){
                     exit(1);
                 }
                 else{
-                    *(osoitin-2)=*(osoitin-1)/ *(osoitin-2);
+                    *(osoitin-2)=*(osoitin-2)/ *(osoitin-1);
                     osoitin-=2;
                 }
             }
