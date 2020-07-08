@@ -75,7 +75,7 @@ bool Cards::bottom_to_top(){
     }
     else{
         Card_data* item_ptr= top_;
-        int id;
+        int id=0;
         int length=1;
 
         while(item_ptr!=nullptr){
@@ -104,7 +104,7 @@ bool Cards::bottom_to_top(){
 // Moves the first element of the data structure as the last one.
 // Returns false, if the data structure is empty, otherwise returns true.
 bool Cards::top_to_bottom(){
-    int id;
+    int id=0;
     if(remove(id)){
         Card_data* new_structure=new Card_data{id,nullptr};
         Card_data* item= top_;
@@ -127,7 +127,7 @@ int Cards:: recursive_print(Card_data* top, std::ostream& s){
     }
     else{
         int value=top->data;
-        int num;
+        int num=0;
         top=top->next;
         num=recursive_print(top,s);
         s<<num<<": "<<value<<endl;
