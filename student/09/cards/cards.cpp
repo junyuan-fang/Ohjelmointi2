@@ -54,7 +54,7 @@ bool Cards::is_empty(){
 // Removes the topmost card and passes it in the reference parameter id to the caller.
 // Returns false, if the data structure is empty, otherwise returns true.
 bool Cards::remove(int& id){
-    if(is_empty()||top_->next==nullptr){
+    if(is_empty()){
         return false;
     }
     else{
@@ -105,7 +105,10 @@ bool Cards::bottom_to_top(){
 // Returns false, if the data structure is empty, otherwise returns true.
 bool Cards::top_to_bottom(){
     int id=0;
-    if(remove(id)){
+    if(top_->next==nullptr){
+        return true;
+    }
+    else if(remove(id)){
         Card_data* new_structure=new Card_data{id,nullptr};
         Card_data* item= top_;
         while (item->next!=nullptr){
