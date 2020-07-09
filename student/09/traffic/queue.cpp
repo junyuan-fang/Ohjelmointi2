@@ -58,6 +58,7 @@ void Queue::switch_light(){
             passable_left_=cycle_;
         }
         else{
+            cout<<"Vehicle(s) ";
             while (vehicle_passed<cycle_&&first_!=nullptr){
                 Vehicle* item_delete=first_;
                 cout<<first_->reg_num<<" ";
