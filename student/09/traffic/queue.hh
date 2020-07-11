@@ -14,6 +14,10 @@ public:
 
     // Destructor that deletes all the remaining vehicles from the queue.
     ~Queue();
+    
+    // Queue method, for denying the copy constructor
+    Queue(const Queue& alustusarvo)=delete;
+    Queue& operator =(const Queue& sijoitusarvo)=delete;
 
     // Inserts a vehicle, the register number of which is reg, to the queue.
     void enqueue(string reg);
