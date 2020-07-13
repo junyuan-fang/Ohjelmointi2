@@ -124,9 +124,10 @@ int main() {
                 not_num=true;
                 break;
             }
+
         }
 
-        if(parameters.size()!=command_ptr->parameter_number){
+        if(pieces.size()!=command_ptr->parameter_number+1){
             cout<<"Error: wrong number of parameters."<<endl;
             continue;
         }
