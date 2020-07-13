@@ -114,7 +114,7 @@ int main() {
         }
 
         bool not_num=false;
-        vector<int> parameters;
+        vector<double> parameters;
         for (int i=1;i<int(pieces.size());++i){
             double val;
             if(string_to_double(pieces.at(i),val)){
@@ -126,14 +126,13 @@ int main() {
             }
         }
 
-        if(not_num){
-            cout<<"Error: a non-number operand."<<endl;
+        if(parameters.size()!=command_ptr->parameter_number){
+            cout<<"Error: wrong number of parameters."<<endl;
             continue;
         }
 
-
-        if(parameters.size()!=command_ptr->parameter_number){
-            cout<<"Error: wrong number of parameters."<<endl;
+        if(not_num){
+            cout<<"Error: a non-number operand."<<endl;
             continue;
         }
 
