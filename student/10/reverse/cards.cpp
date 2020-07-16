@@ -27,15 +27,17 @@ void Cards::print(std::ostream& s) {
 // Reverses the content of the data structure as opposite.
 void Cards::reverse(){
     int item_size=1;
-    int id;
+    int id=0;
+    int target=0;
     shared_ptr<Card_data> item_before;
     shared_ptr<Card_data> item =top_;
-    while(item->next!=nullptr){
-        ++item_size;
-        item=item->next;
+    if(item!=nullptr){//not empty
+        while(item->next!=nullptr){
+            ++item_size;
+            item=item->next;
+        }
+        target=item->data;
     }
-    int target=item->data;
-    
     if (item_size>1){
         while(top_->data!=target){
             item_before=nullptr;
