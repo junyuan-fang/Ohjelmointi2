@@ -11,6 +11,7 @@ Familytree::~Familytree(){
         person=nullptr;
     }
     persons_.clear();
+    names_.clear();
 }
 
 
@@ -80,7 +81,7 @@ void Familytree::addRelation(const std::string& child,
         output<<"Error. "<< child <<" not found."<<endl;
         return;
     }
-    for(int i=1;i<=parents.size();++i){
+    for(int i=1;i<=int(parents.size());++i){
         if(names_.find(parents[i])==names_.end()){
             output<<"Error. "<< parents[i]<<" not found."<<endl;
             return;
@@ -104,16 +105,26 @@ void Familytree::addRelation(const std::string& child,
  *  Param1: ID of the person
  *  Param2: Output-stream for printing
  */
-void printChildren(const std::string& id,
-                   std::ostream& output) const;
+void Familytree::printChildren(const std::string& id,
+                               std::ostream& output) const{
+    Person* id_pointer=getPointer(id);
+    for (Person* person: id_pointer->children_){
+        output<<person->id_<<endl;
+    }
+}
 
 /* Description: Prints all the parents for the person.
  * Parameters:
  *  Param1: ID of the person
  *  Param2: Output-stream for printing
  */
-void printParents(const std::string& id,
-                  std::ostream& output) const;
+void Familytree::printParents(const std::string& id,
+                              std::ostream& output) const{
+    Person* id_pointer=getPointer(id);
+    for (Person* person: id_pointer->parents_){
+        output<<person->id_<<endl;
+    }
+}
 
 /* Description: Prints all siblings for the person.
  *  (Persons who shares a parent)
@@ -121,8 +132,16 @@ void printParents(const std::string& id,
  *  Param1: ID of the person
  *  Param2: Output-stream for printing
  */
-void printSiblings(const std::string& id,
-                   std::ostream& output) const;
+void Familytree::printSiblings(const std::string& id,
+                               std::ostream& output) const{
+    Person* id_ptr=getPointer(id);
+    Person* parent_ptr=id_ptr->children_;
+    for (Person* person: parent_ptr->children_){
+        if( person->id_!=id){
+            output<<person->id_<<endl;
+        }
+    }
+}
 
 /* Description: Prints all the cousins for the person.
  *  (Persons who share same grandparents)
@@ -130,8 +149,11 @@ void printSiblings(const std::string& id,
  *  Param1: ID of the person
  *  Param2: Output-stream for printing
  */
-void printCousins(const std::string& id,
-                  std::ostream& output) const;
+void Familytree::printCousins(const std::string& id,
+                              std::ostream& output) const{
+
+}
+
 
 /* Description: Prints the tallest person of the ID's lineage.
  * Parameters:
@@ -185,7 +207,13 @@ void printGrandParentsN(const std::string& id, const int n,
  */
 
 // Return a pointer for ID.
-Person* getPointer(const std::string& id) const;
+Person* Familytree::getPointer(const std::string& id) const{
+    for (Person* person : persons_){
+        if(person->id_==id){
+            return person;
+        }
+    }
+}
 
 // Printing errors.
 void printNotFound(const std::string& id,
