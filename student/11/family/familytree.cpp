@@ -3,9 +3,14 @@
 
 using namespace std;
 
-Familytree::Familytree(){
+Familytree::Familytree():names_(), persons_(){
 }
 Familytree::~Familytree(){
+    for( Person* person: persons_){
+        delete person;
+        person=nullptr;
+    }
+    persons_.clear();
 }
 
 
@@ -18,9 +23,21 @@ Familytree::~Familytree(){
  *  If person's ID is already in datastructure:
  *      "Error. Person already added."
  */
-void addNewPerson(const std::string& id, int height,
-                  std::ostream &output);
+void Familytree::  addNewPerson(const std::string& id, int height,
+                                std::ostream &output){
 
+    if(names_.find(id)!=names_.end()){
+        output<<"Error. Person already added."<<endl;
+        return;
+    }
+    else{
+        names_.insert(id);
+        Person* a;
+        a->id_=id;
+        a->height_=height;
+        persons_.push_back(a);
+    }
+}
 
 
 /* Description: Prints all stored Persons' IDs and heights
@@ -29,7 +46,15 @@ void addNewPerson(const std::string& id, int height,
  * Errormessages:
  *  None.
  */
-void printPersons(std::ostream &output) const;
+void Familytree::printPersons(std::ostream &output) const{
+    for(string id : names_){
+        for (Person* person : persons_ ){
+            if(person->id_==id){
+                output<<id<<" "<<person->height_<<endl;
+            }
+        }
+    }
+}
 
 
 
@@ -48,9 +73,31 @@ void printPersons(std::ostream &output) const;
  *  Param2: Vector containing the parents' IDs
  *  Param3: Output-stream for error-printing
  */
-void addRelation(const std::string& child,
+void Familytree::addRelation(const std::string& child,
                  const std::vector<std::string>& parents,
-                 std::ostream& output);
+                 std::ostream& output){
+    if(names_.find(child)==names_.end()){
+        output<<"Error. "<< child <<" not found."<<endl;
+        return;
+    }
+    for(int i=1;i<=parents.size();++i){
+        if(names_.find(parents[i])==names_.end()){
+            output<<"Error. "<< parents[i]<<" not found."<<endl;
+            return;
+        }
+        for(Person* kid: persons_){
+            if(child == kid->id_){
+                for(Person* one_parent: persons_){
+                    if(parents[i]==one_parent->id_){
+                        kid->parents_[i]=one_parent;
+                        one_parent->children_.push_back(kid);
+                    }
+                }
+            }
+        }
+    }
+
+}
 
 /* Description: Prints all children for the person.
  * Parameters:

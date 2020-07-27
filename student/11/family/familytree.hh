@@ -165,7 +165,7 @@ public:
                             std::ostream& output) const;
 
 private:
-    Person* ancestors_;
+    std::vector <Person*> persons_;
     IdSet names_;
 
     /* The following functions are meant to make project easier.
