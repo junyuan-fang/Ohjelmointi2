@@ -221,7 +221,7 @@ void Familytree::printTallestInLineage(const std::string& id,
         return;
     }
 
-    Person* greatest;
+    Person* greatest=nullptr;
     for(Person* x: persons_){
         if(x->id_==id){
             greatest=x;
@@ -277,7 +277,7 @@ void Familytree::printShortestInLineage(const std::string& id,
     }
 
 
-    Person* greatest;
+    Person* greatest=nullptr;
     for(Person* x: persons_){
         if(x->id_==id){
             greatest=x;
