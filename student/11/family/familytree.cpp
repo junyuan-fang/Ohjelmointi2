@@ -158,12 +158,16 @@ void Familytree::printSiblings(const std::string& id,
         printNotFound(id,output);
         return;
     }
+
     IdSet names;
     Person* id_ptr=getPointer(id);
-    Person* parent_ptr=id_ptr->parents_[0];
-    for (Person* person: parent_ptr->children_){
-        if( person->id_!=id){
-            names.insert(person->id_);
+    for(Person* parent_ptr: id_ptr->parents_){
+        if(parent_ptr!=nullptr){
+            for (Person* person: parent_ptr->children_){
+                if( person->id_!=id){
+                    names.insert(person->id_);
+                }
+            }
         }
     }
     printIDs(id,  "siblings",names, output);
