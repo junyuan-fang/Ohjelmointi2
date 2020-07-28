@@ -145,6 +145,7 @@ void Familytree::printParents(const std::string& id,
     printIDs(id, "parents", names, output);
 }
 
+
 /* Description: Prints all siblings for the person.
  *  (Persons who shares a parent)
  * Parameters:
@@ -165,8 +166,9 @@ void Familytree::printSiblings(const std::string& id,
             names.insert(person->id_);
         }
     }
-    printIDs(id,  "parents",names, output);
+    printIDs(id,  "siblings",names, output);
 }
+
 
 /* Description: Prints all the cousins for the person.
  *  (Persons who share same grandparents)
