@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Familytree::Familytree():names_(), persons_(){
+Familytree::Familytree(): persons_(), names_(){
 }
 Familytree::~Familytree(){
     for( Person* person: persons_){
@@ -33,7 +33,7 @@ void Familytree::  addNewPerson(const std::string& id, int height,
     }
     else{
         names_.insert(id);
-        Person* a;
+        Person* a=new Person;
         a->id_=id;
         a->height_=height;
         persons_.push_back(a);
@@ -51,7 +51,7 @@ void Familytree::printPersons(std::ostream &output) const{
     for(string id : names_){
         for (Person* person : persons_ ){
             if(person->id_==id){
-                output<<id<<" "<<person->height_<<endl;
+                output<<id<<", "<<person->height_<<endl;
             }
         }
     }
@@ -81,7 +81,10 @@ void Familytree::addRelation(const std::string& child,
         output<<"Error. "<< child <<" not found."<<endl;
         return;
     }
-    for(int i=1;i<=int(parents.size());++i){
+    for(int i=0;i<int(parents.size());++i){
+        if(parents.at(i)=="-"){
+            continue;
+        }
         if(names_.find(parents[i])==names_.end()){
             output<<"Error. "<< parents[i]<<" not found."<<endl;
             return;
@@ -107,10 +110,14 @@ void Familytree::addRelation(const std::string& child,
  */
 void Familytree::printChildren(const std::string& id,
                                std::ostream& output) const{
-    Person* id_pointer=getPointer(id);
+    IdSet names;
+    Person* id_pointer=getPointer(id);//get nullptr, if id not in container
     for (Person* person: id_pointer->children_){
-        output<<person->id_<<endl;
+        names.insert(person->id_);
     }
+    printIDs(id, "children", names, output);
+
+
 }
 
 /* Description: Prints all the parents for the person.
@@ -120,10 +127,14 @@ void Familytree::printChildren(const std::string& id,
  */
 void Familytree::printParents(const std::string& id,
                               std::ostream& output) const{
+    IdSet names;
     Person* id_pointer=getPointer(id);
     for (Person* person: id_pointer->parents_){
-        output<<person->id_<<endl;
+        if(person!=nullptr){
+            names.insert(person->id_);
+        }
     }
+    printIDs(id, "parents", names, output);
 }
 
 /* Description: Prints all siblings for the person.
@@ -134,13 +145,15 @@ void Familytree::printParents(const std::string& id,
  */
 void Familytree::printSiblings(const std::string& id,
                                std::ostream& output) const{
+    IdSet names;
     Person* id_ptr=getPointer(id);
-    Person* parent_ptr=id_ptr->children_;
+    Person* parent_ptr=id_ptr->parents_[0];
     for (Person* person: parent_ptr->children_){
         if( person->id_!=id){
-            output<<person->id_<<endl;
+            names.insert(person->id_);
         }
     }
+    printIDs(id,  "parents",names, output);
 }
 
 /* Description: Prints all the cousins for the person.
@@ -151,7 +164,32 @@ void Familytree::printSiblings(const std::string& id,
  */
 void Familytree::printCousins(const std::string& id,
                               std::ostream& output) const{
+    //cousins are father's or mothers's siblins's children
+    IdSet names;
+    Person* id_ptr=getPointer(id);
+    //parents are:
+    for (Person* parents: id_ptr->parents_){
+        if(parents!=nullptr){
 
+            //to have grandparents
+            for(Person* grandparent_ptr: parents->parents_){
+                if(grandparent_ptr!=nullptr){
+
+                    //now (parents_sib is the variable of)parent(s) siblins
+                    for (Person* parents_sib: grandparent_ptr->children_){
+                        if( parents_sib->id_!=parents->id_){
+
+                            //now to add parents_sib's children(s)
+                            for (Person* cousins: parents_sib->children_){
+                                names.insert(cousins->id_);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    printIDs(id,  "cousins",names, output);
 }
 
 
@@ -160,16 +198,20 @@ void Familytree::printCousins(const std::string& id,
  *  Param1: ID of the person
  *  Param2: Output-stream for printing
  */
-void printTallestInLineage(const std::string& id,
-                           std::ostream& output) const;
+void Familytree::printTallestInLineage(const std::string& id,
+                                       std::ostream& output) const{
+
+}
 
 /* Description:
  * Parameters:
  *  Param1: ID of the person
  *  Param2: Output-stream for printing
  */
-void printShortestInLineage(const std::string& id,
-                            std::ostream& output) const;
+void Familytree::printShortestInLineage(const std::string& id,
+                                        std::ostream& output) const{
+
+}
 
 
 /* The following functions have additional errormessage:
@@ -186,8 +228,10 @@ void printShortestInLineage(const std::string& id,
  *  Param2: Distance from the person. (n-1 times "grandness")
  *  Param3: Output-stream for printing
  */
-void printGrandChildrenN(const std::string& id, const int n,
-                         std::ostream& output) const;
+void Familytree::printGrandChildrenN(const std::string& id, const int n,
+                                     std::ostream& output) const{
+
+}
 
 /* Description: Prints the amount of grandparents in given distance
  *  from the person.
@@ -196,8 +240,13 @@ void printGrandChildrenN(const std::string& id, const int n,
  *  Param2: Distance from the person. (n-1 times "grandness")
  *  Param3: Output-stream for printing
  */
-void printGrandParentsN(const std::string& id, const int n,
-                        std::ostream& output) const;
+void Familytree::printGrandParentsN(const std::string& id, const int n,
+                                    std::ostream& output) const{
+
+}
+
+
+
 //private>
 
 /* The following functions are meant to make project easier.
@@ -213,18 +262,32 @@ Person* Familytree::getPointer(const std::string& id) const{
             return person;
         }
     }
+    return nullptr;
+}
+//print<ID> has <num><somthing >
+void Familytree:: printIDs(const std::string& ID, const std::string& human,
+                           const IdSet& names, std:: ostream& output) const{
+
+    if(names.size()!=0){
+        output<<ID<<" has "<<names.size()<<" "<<human<<":"<<endl;
+        for (string name : names){
+            output<<name<<endl;
+        }
+    }
+    else{
+       output<<ID<<" has no "<<human<<"."<<endl;
+    }
+
 }
 
 // Printing errors.
-void printNotFound(const std::string& id,
-                   std::ostream& output) const;
+//void printNotFound(const std::string& id,std::ostream& output) const;
 
 // Turns a vector of persons to a set of IDs.
-IdSet VectorToIdSet(const std::vector<Person*> &container) const;
+//IdSet VectorToIdSet(const std::vector<Person*> &container) const;
 
 // Prints the the data in a container.
-void printGroup(const std::string& id, const std::string& group,
-                const IdSet& container, std::ostream& output) const;
+//void printGroup(const std::string& id, const std::string& group,const IdSet& container, std::ostream& output) const;
 
 
 

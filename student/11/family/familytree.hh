@@ -177,6 +177,10 @@ private:
     // Return a pointer for ID.
     Person* getPointer(const std::string& id) const;
 
+    //print<ID> has <num> <somthing>
+    void  printIDs(const std::string& ID, const std::string& human,
+                               const IdSet& names, std:: ostream& output)const;
+
     // Printing errors.
     void printNotFound(const std::string& id,
                        std::ostream& output) const;
