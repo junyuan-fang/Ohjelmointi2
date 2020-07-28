@@ -137,32 +137,7 @@ public:
                                 std::ostream& output) const;
 
 
-    /* The following functions have additional errormessage:
-     *  If Param2's value is less than 1:
-     *      "Error. Level can't be less than 1."
-     * ---------------------------------------------------------------
-     */
 
-
-    /* Description: Prints the amount of grandchildren in given distance
-     *  from the person.
-     * Parameters:
-     *  Param1: ID of the person
-     *  Param2: Distance from the person. (n-1 times "grandness")
-     *  Param3: Output-stream for printing
-     */
-    void printGrandChildrenN(const std::string& id, const int n,
-                             std::ostream& output) const;
-
-    /* Description: Prints the amount of grandparents in given distance
-     *  from the person.
-     * Parameters:
-     *  Param1: ID of the person
-     *  Param2: Distance from the person. (n-1 times "grandness")
-     *  Param3: Output-stream for printing
-     */
-    void printGrandParentsN(const std::string& id, const int n,
-                            std::ostream& output) const;
 
 private:
     std::vector <Person*> persons_;
@@ -191,7 +166,6 @@ private:
     // Prints the the data in a container.
     void printGroup(const std::string& id, const std::string& group,
                     const IdSet& container, std::ostream& output) const;
-
 };
 
 #endif // FAMILYTREE_HH
