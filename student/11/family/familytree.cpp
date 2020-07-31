@@ -327,6 +327,80 @@ void Familytree::printShortestInLineage(const std::string& id,
 }
 
 
+/* The following functions have additional errormessage:
+ *  If Param2's value is less than 1:
+ *      "Error. Level can't be less than 1."
+ * ---------------------------------------------------------------
+ */
+
+
+/* Description: Prints the amount of grandchildren in given distance
+ *  from the person.
+ * Parameters:
+ *  Param1: ID of the person
+ *  Param2: Distance from the person. (n-1 times "grandness")
+ *  Param3: Output-stream for printing
+ */
+void Familytree::printGrandChildrenN(const std::string& id, const int n,
+                                     std::ostream& output) const{
+    if(n<1){
+        cout<<"Error. Level can't be less than 1"<<endl;
+        return;
+    }
+
+    int times=n;
+    string mark="great-";
+    string marks="";
+    for(int i=0;i<n;++i){
+        marks+=mark;
+    }
+
+    IdSet names;
+    while (times!=0){
+        names.clear();
+        for(Person* child : persons_){
+            for(Person* grand_chi: child->children_){
+                names.insert(grand_chi->id_);
+            }
+
+        }
+        --times;
+    }
+
+
+    if(names.size()!=0){
+        output<<id<<" has "<<names.size()<<" "<<marks<<"grandchildren"<<endl;
+        for(string id: names){
+            output<<id<<endl;
+        }
+    }
+    else{
+        output<<id<<" has no "<<marks<<"grandchildren"<<endl;
+    }
+
+
+
+}
+
+
+
+
+/* Description: Prints the amount of grandparents in given distance
+ *  from the person.
+ * Parameters:
+ *  Param1: ID of the person
+ *  Param2: Distance from the person. (n-1 times "grandness")
+ *  Param3: Output-stream for printing
+ */
+void Familytree::printGrandParentsN(const std::string& id, const int n,
+                        std::ostream& output) const{
+    if(n<1){
+        cout<<"Error. Level can't be less than 1"<<endl;
+        return;
+    }
+}
+
+
 
 
 
@@ -371,7 +445,14 @@ void Familytree::printNotFound(const std::string& id,std::ostream& output) const
 
 
 // Turns a vector of persons to a set of IDs.
-//IdSet VectorToIdSet(const std::vector<Person*> &container) const;
+IdSet Familytree::VectorToIdSet(const std::vector<Person*> &container) const{
+    IdSet names;
+    for(Person* person : container){
+        names.insert(person->id_);
+    }
+    return names;
+}
+
 
 // Prints the the data in a container.
 //void printGroup(const std::string& id, const std::string& group,const IdSet& container, std::ostream& output) const;

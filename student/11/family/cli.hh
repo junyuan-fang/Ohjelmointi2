@@ -100,8 +100,8 @@ private:
         {{"PARENTS", "VANHEMMAT"},nullptr,&Familytree::printParents,nullptr},
         {{"TALLEST", "PISIN"}, nullptr,&Familytree::printTallestInLineage,nullptr},
         {{"SHORTEST", "LYHYIN", "LYHIN"}, nullptr, &Familytree::printShortestInLineage, nullptr},
-        //{{"GRANDCHILDREN", "LAPSENLAPSET", "GC", "LL"}, nullptr, nullptr,&Familytree::printGrandChildrenN},
-        //{{"GRANDPARENTS", "ISOVANHEMMAT", "GP", "IV"}, nullptr,nullptr,&Familytree::printGrandParentsN},
+        {{"GRANDCHILDREN", "LAPSENLAPSET", "GC", "LL"}, nullptr, nullptr,&Familytree::printGrandChildrenN},
+        {{"GRANDPARENTS", "ISOVANHEMMAT", "GP", "IV"}, nullptr,nullptr,&Familytree::printGrandParentsN},
         {{},nullptr,nullptr,nullptr}
     };
 
