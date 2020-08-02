@@ -1,6 +1,7 @@
 #include "cockatoo.hh"
 
-Cockatoo::Cockatoo(){
+Cockatoo::Cockatoo():
+    Bird(){
 
 }
 

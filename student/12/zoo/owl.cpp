@@ -1,6 +1,7 @@
 #include "owl.hh"
 
-Owl::Owl()
+Owl::Owl():
+    Bird()
 {
 
 }
