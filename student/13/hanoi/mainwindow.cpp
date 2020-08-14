@@ -4,6 +4,10 @@
 #include <QTimer>
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
+#include <vector>
+#include <map>
+
+using namespace std;
 
 void MainWindow:: make_6_moving_buttons_disable(const bool& press){
     ui_->a_b->setDisabled(press);
@@ -12,7 +16,10 @@ void MainWindow:: make_6_moving_buttons_disable(const bool& press){
     ui_->b_a->setDisabled(press);
     ui_->c_a->setDisabled(press);
     ui_->c_b->setDisabled(press);
+}
 
+int MainWindow:: get_disk_location_x(const int& width,const int& peg_center){
+    return peg_center-width/2;
 }
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -44,16 +51,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     //set defaults
-    ui_->spinBox->setMinimum(1);
+    ui_->spinBox->setMinimum(DISK_MIN);
+    ui_->spinBox->setMaximum(DISK_MAX);
+
     ui_->reset->setDisabled(true);
     make_6_moving_buttons_disable(true);
 
+    //pegs
     QBrush blackBrush(Qt::black);
     QPen blackPen(Qt::black);
     blackPen.setWidth(1);
-    scene_->addRect(LEFT_PEG_CENTER,BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
-    scene_->addRect(MIDDLE_PEG_CENTER,BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
-    scene_->addRect(RIGHT_PEG_CENTER,BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
+    scene_->addRect(CENTER_OF_PEGS[A],BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
+    scene_->addRect(CENTER_OF_PEGS[B],BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
+    scene_->addRect(CENTER_OF_PEGS[C],BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
 
 
 
@@ -83,6 +93,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    for(Disk item: disks){
+        delete item.disk;
+    }
     delete ui_;
 }
 
@@ -110,3 +123,24 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
 }
 
 
+void MainWindow::on_start_clicked()
+{
+    disk_number_=ui_->spinBox->value();
+    Disk new_disk;
+    QBrush brush= COLOR[A];
+    QPen pen(Qt::white);
+    for(int i=0;i<disk_number_;++i){
+        new_disk.width=DISK_WIDTH_MIN+i*DISK_WIDTH_ADD;
+        new_disk.y=BORDER_DOWN-(disk_number_-i)*DISK_HEIGHT;
+        new_disk.x=get_disk_location_x(new_disk.width,CENTER_OF_PEGS[A]);
+        new_disk.disk=scene_->addRect(new_disk.x, new_disk.y, new_disk.width, DISK_HEIGHT, pen, brush);
+        disks_vec.push_back(new_disk);
+    }
+
+    
+}
+
+void MainWindow::on_reset_clicked()
+{
+
+}
