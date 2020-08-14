@@ -2,10 +2,11 @@
 #define MAINWINDOW_HH
 
 #include <QMainWindow>
-#include <QGraphicsEllipseItem>
+#include <QGraphicsRectItem>
 #include <QGraphicsScene>
 #include <QTimer>
-
+#include <vector>
+using namespace std;
 namespace Ui {
 class MainWindow;
 }
@@ -20,38 +21,38 @@ public:
     void keyPressEvent(QKeyEvent* event) override;
 
 private slots:
-    void on_moveButton_clicked();
-    void on_verticalButton_pressed();
-    void on_horizontalButton_pressed();
-    void on_upRadioButton_toggled(bool checked);
-    void on_downRadioButton_toggled(bool checked);
-    void on_leftRadioButton_toggled(bool checked);
-    void on_rightRadioButton_toggled(bool checked);
+
 
 private:
     Ui::MainWindow *ui_;
 
     QGraphicsScene* scene_;          // a surface for
-    QGraphicsEllipseItem* circle_;   // drawing a circle
+    vector<QGraphicsRectItem*> disks_;   // drawing disks
 
     QTimer timer_;          // for continuous moving
 
-    const int STEP = 20;            // how much to move at a time
-    const int BORDER_UP = 0;
+    // Scene
     const int BORDER_DOWN = 260;
-    const int BORDER_LEFT = 0;
     const int BORDER_RIGHT = 680;
 
+    //pegs x coordination
+    const int LEFT_PEG_CENTER=BORDER_RIGHT/4;
+    const int MIDDLE_PEG_CENTER=BORDER_RIGHT/2;
+    const int RIGHT_PEG_CENTER=BORDER_RIGHT*3/4;
 
-    bool is_right_;    // is_right // is_horizontal
-    bool is_down_;      // is_down // is_vertical
+    //pegs hight
+    const int PEG_HEIGHT=240;
+    const int PEG_WIDTH=2;
 
-    // Moves the circle to a desired direction
-    void circle_move();
 
-    // Checks if moving is possible and turns the move button
-    // either enabled or disabled
-    void update_move_button();
+
+
+
+
+    void make_6_moving_buttons_disable(const bool& press);
+
+
 };
+
 
 #endif // MAINWINDOW_HH
