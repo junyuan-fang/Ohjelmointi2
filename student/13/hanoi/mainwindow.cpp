@@ -6,6 +6,7 @@
 #include <QGraphicsRectItem>
 #include <vector>
 #include <map>
+#include <memory>
 
 using namespace std;
 
@@ -65,21 +66,10 @@ MainWindow::MainWindow(QWidget *parent) :
     scene_->addRect(CENTER_OF_PEGS[B],BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
     scene_->addRect(CENTER_OF_PEGS[C],BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
 
-
-
-
-
-
-
     // Defining the color and outline of the disc
 /*    QBrush redBrush(Qt::red);
     QPen blackPen(Qt::black);
     blackPen.setWidth(2)*/
-
-
-
-    //circle_ = scene_->addEllipse(0, 0, STEP, STEP, blackPen, redBrush);
-
 
     // A non-singleshot timer fires every interval (1000) milliseconds,
     // which makes circle_move function to be called,
@@ -93,7 +83,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-    for(Disk item: disks){
+    for(Disk item: disks_vec_){
         delete item.disk;
     }
     delete ui_;
@@ -130,17 +120,91 @@ void MainWindow::on_start_clicked()
     QBrush brush= COLOR[A];
     QPen pen(Qt::white);
     for(int i=0;i<disk_number_;++i){
+        new_disk.peg_location=A;
         new_disk.width=DISK_WIDTH_MIN+i*DISK_WIDTH_ADD;
         new_disk.y=BORDER_DOWN-(disk_number_-i)*DISK_HEIGHT;
         new_disk.x=get_disk_location_x(new_disk.width,CENTER_OF_PEGS[A]);
         new_disk.disk=scene_->addRect(new_disk.x, new_disk.y, new_disk.width, DISK_HEIGHT, pen, brush);
-        disks_vec.push_back(new_disk);
+        disks_vec_.push_back(new_disk);
     }
+    disk_number_of_peg_[A]=disk_number_;
+    make_6_moving_buttons_disable(false);
 
     
+}
+
+//make a helping function that can move the disks,
+//but still need another function for checking the lefality of moving
+//this function always move the smallest one of the peg
+void MainWindow::move_disk(const Peg &from, const Peg &to){
+    int top_index=0;
+    bool find=false;
+    //get the top_index, and check if any disks on the peg
+    for(unsigned int x=0; x<disks_vec_.size();++x){
+        if(disks_vec_.at(x).peg_location==from){
+            top_index=x;
+            find=true;
+            break;
+        }
+    }
+    //if there is a disk on the target get, then we can start moving
+    if(find){
+        unsigned int i = 0;
+        do{
+            // if the disk if on the peg, and it is the smallest one
+            if(disks_vec_.at(i).peg_location==from &&
+                disks_vec_.at(i).x>disks_vec_.at(top_index).x){
+                top_index=i;
+            }
+            ++i;
+        }while(i<disks_vec_.size());
+        //disk's x value changes by peg's location,
+        //y value changes by disk's number
+        //delta_y= the placewill be(y)-right now(y)
+        int delta_x=(to-from)*DISTANCE_PEG;
+        int delta_y= (BORDER_DOWN-(disk_number_of_peg_[to]+1)*DISK_HEIGHT)-disks_vec_.at(top_index).y;
+        disks_vec_.at(top_index).x+=delta_x;
+        disks_vec_.at(top_index).y+=delta_y;
+        //moving
+        disks_vec_.at(top_index).disk->moveBy(delta_x, delta_y);
+        disk_number_of_peg_[from]--;
+        disk_number_of_peg_[to]++;
+        disks_vec_.at(top_index).peg_location=to;
+    }
+
 }
 
 void MainWindow::on_reset_clicked()
 {
 
+}
+
+void MainWindow::on_a_b_clicked()
+{
+    move_disk(A,B);
+}
+
+void MainWindow::on_b_c_clicked()
+{
+    move_disk(B,C);
+}
+
+void MainWindow::on_c_a_clicked()
+{
+    move_disk(C,A);
+}
+
+void MainWindow::on_a_c_clicked()
+{
+    move_disk(A,C);
+}
+
+void MainWindow::on_b_a_clicked()
+{
+    move_disk(B,A);
+}
+
+void MainWindow::on_c_b_clicked()
+{
+    move_disk(C,B);
 }

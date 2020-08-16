@@ -31,6 +31,18 @@ private slots:
 
     void on_reset_clicked();
 
+    void on_a_b_clicked();
+    
+    void on_b_c_clicked();
+    
+    void on_c_a_clicked();
+    
+    void on_a_c_clicked();
+    
+    void on_b_a_clicked();
+    
+    void on_c_b_clicked();
+    
 private:
     Ui::MainWindow *ui_;
 
@@ -46,10 +58,11 @@ private:
 
 
     //pegs x coordination
+    const int DISTANCE_PEG=BORDER_RIGHT/4;
     const vector<int>  CENTER_OF_PEGS={
-             BORDER_RIGHT/4,
-            BORDER_RIGHT/2,
-            BORDER_RIGHT*3/4};
+             DISTANCE_PEG,
+            DISTANCE_PEG*2,
+            DISTANCE_PEG*3};
 
     //colors
     const vector<QBrush> COLOR{
@@ -74,19 +87,24 @@ private:
         int y;
         int x;
         int width;
+        Peg peg_location;
         QGraphicsRectItem* disk;
     };
 
     //disks
-    vector<Disk> disks_vec;
+    vector<Disk> disks_vec_;
 
     //which is setted by user
     int disk_number_;
+
+    //number of disks which on the peg
+    vector<int> disk_number_of_peg_={0,0,0};
 
 
 
     int get_disk_location_x(const int& width,const int& peg_center);
     void make_6_moving_buttons_disable(const bool& press);
+    void move_disk(const Peg& from , const Peg& to);
 
 
 };
