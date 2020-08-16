@@ -19,7 +19,7 @@ void MainWindow:: make_6_moving_buttons_disable(const bool& press){
     ui_->c_b->setDisabled(press);
 }
 
-int MainWindow:: get_disk_location_x(const int& width,const int& peg_center){
+int MainWindow:: get_disk_location_x(const int& width,const int& peg_center)const{
     return peg_center-width/2;
 }
 
@@ -128,36 +128,48 @@ void MainWindow::on_start_clicked()
         disks_vec_.push_back(new_disk);
     }
     disk_number_of_peg_[A]=disk_number_;
-    make_6_moving_buttons_disable(false);
-
+    update_buttons();
     
 }
+
+//return bool value ture if there is a disk on the peg,
+//and change first_index. Otherwise return false
+bool MainWindow::is_disk_on_peg(const Peg &peg, int& first_index) const{
+    bool find=false;
+    //get the top_index, and check if any disks on the peg
+    for(unsigned int x=0; x<disks_vec_.size();++x){
+        if(disks_vec_.at(x).peg_location==peg){
+            find=true;
+            first_index=x;
+            break;
+        }
+    }
+    return find;
+}
+
+// go through the vec, and return the top_index of the peg
+int MainWindow::get_smallest_disk_index_of_peg(const Peg &peg, int top_index) const{
+    unsigned int i = 0;
+    do{
+        // if the disk if on the peg, and it is the smallest one
+        if(disks_vec_.at(i).peg_location==peg &&
+            disks_vec_.at(i).width<disks_vec_.at(top_index).width){
+            top_index=i;
+        }
+        ++i;
+    }while(i<disks_vec_.size());
+    return top_index;
+}
+
 
 //make a helping function that can move the disks,
 //but still need another function for checking the lefality of moving
 //this function always move the smallest one of the peg
 void MainWindow::move_disk(const Peg &from, const Peg &to){
-    int top_index=0;
-    bool find=false;
-    //get the top_index, and check if any disks on the peg
-    for(unsigned int x=0; x<disks_vec_.size();++x){
-        if(disks_vec_.at(x).peg_location==from){
-            top_index=x;
-            find=true;
-            break;
-        }
-    }
+    int first_index=0;
     //if there is a disk on the target get, then we can start moving
-    if(find){
-        unsigned int i = 0;
-        do{
-            // if the disk if on the peg, and it is the smallest one
-            if(disks_vec_.at(i).peg_location==from &&
-                disks_vec_.at(i).x>disks_vec_.at(top_index).x){
-                top_index=i;
-            }
-            ++i;
-        }while(i<disks_vec_.size());
+    if(is_disk_on_peg(from,first_index)){
+        int top_index=get_smallest_disk_index_of_peg(from, first_index);
         //disk's x value changes by peg's location,
         //y value changes by disk's number
         //delta_y= the placewill be(y)-right now(y)
@@ -174,6 +186,54 @@ void MainWindow::move_disk(const Peg &from, const Peg &to){
 
 }
 
+//return true: when smallest(from)< smalleset(to)
+bool MainWindow::is_leagal_from_to(const Peg& from , const Peg& to)const{
+    int first_index=0;// first index of the
+    if(is_disk_on_peg(from,first_index)){
+        if(disk_number_of_peg_.at(to)==0){
+            return true;
+        }
+        int from_index=get_smallest_disk_index_of_peg(from, first_index);
+        is_disk_on_peg(to,first_index);// now first_index is changed for the destination of the peg
+        int to_index=get_smallest_disk_index_of_peg(to, first_index);
+
+        qDebug()<<QString::number(from_index)<<"  "<<QString::number(to_index);
+        return disks_vec_.at(from_index).width<disks_vec_.at(to_index).width;
+    }
+    return false;
+}
+
+
+void MainWindow::update_buttons(){
+    make_6_moving_buttons_disable(true);
+    qDebug()<<"A B";
+    if(is_leagal_from_to(A,B)){
+        ui_->a_b->setEnabled(true);
+    }
+    qDebug()<<"A C";
+    if(is_leagal_from_to(A,C)){
+        ui_->a_c->setEnabled(true);
+    }
+    qDebug()<<"B C";
+    if(is_leagal_from_to(B,C)){
+        ui_->b_c->setEnabled(true);
+    }
+    qDebug()<<"B A";
+    if(is_leagal_from_to(B,A)){
+        ui_->b_a->setEnabled(true);
+    }
+    qDebug()<<"C B";
+    if(is_leagal_from_to(C,B)){
+        ui_->c_b->setEnabled(true);
+    }
+    qDebug()<<"C A";
+    if(is_leagal_from_to(C,A)){
+        ui_->c_a->setEnabled(true);
+    }
+
+}
+
+
 void MainWindow::on_reset_clicked()
 {
 
@@ -182,29 +242,35 @@ void MainWindow::on_reset_clicked()
 void MainWindow::on_a_b_clicked()
 {
     move_disk(A,B);
+    update_buttons();
 }
 
 void MainWindow::on_b_c_clicked()
 {
     move_disk(B,C);
+    update_buttons();
 }
 
 void MainWindow::on_c_a_clicked()
 {
     move_disk(C,A);
+    update_buttons();
 }
 
 void MainWindow::on_a_c_clicked()
 {
     move_disk(A,C);
+    update_buttons();
 }
 
 void MainWindow::on_b_a_clicked()
 {
     move_disk(B,A);
+    update_buttons();
 }
 
 void MainWindow::on_c_b_clicked()
 {
     move_disk(C,B);
+    update_buttons();
 }
