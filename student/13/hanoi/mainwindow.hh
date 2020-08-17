@@ -29,8 +29,6 @@ private slots:
 
     void on_start_clicked();
 
-    void on_reset_clicked();
-
     void on_a_b_clicked();
     
     void on_b_c_clicked();
@@ -43,6 +41,9 @@ private slots:
     
     void on_c_b_clicked();
     
+
+    void on_ok_clicked();
+
 private:
     Ui::MainWindow *ui_;
 
@@ -109,6 +110,7 @@ private:
     void update_buttons();
     int get_smallest_disk_index_of_peg(const Peg& peg, int top_index)const;
     bool is_disk_on_peg(const Peg& peg, int& first_index)const;
+    void remove_all_disks();
 
 
 

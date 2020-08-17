@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_->spinBox->setMinimum(DISK_MIN);
     ui_->spinBox->setMaximum(DISK_MAX);
 
-    ui_->reset->setDisabled(true);
+    ui_->reset->setDisabled(false);
     make_6_moving_buttons_disable(true);
 
     //pegs
@@ -79,6 +79,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+void MainWindow::remove_all_disks(){
+    for(Disk i : disks_vec_){
+        delete i.disk;
+    }
+    disks_vec_.clear();
+    disk_number_of_peg_={0,0,0};
+}
 
 
 MainWindow::~MainWindow()
@@ -115,20 +122,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
 
 void MainWindow::on_start_clicked()
 {
-    disk_number_=ui_->spinBox->value();
-    Disk new_disk;
-    QBrush brush= COLOR[A];
-    QPen pen(Qt::white);
-    for(int i=0;i<disk_number_;++i){
-        new_disk.peg_location=A;
-        new_disk.width=DISK_WIDTH_MIN+i*DISK_WIDTH_ADD;
-        new_disk.y=BORDER_DOWN-(disk_number_-i)*DISK_HEIGHT;
-        new_disk.x=get_disk_location_x(new_disk.width,CENTER_OF_PEGS[A]);
-        new_disk.disk=scene_->addRect(new_disk.x, new_disk.y, new_disk.width, DISK_HEIGHT, pen, brush);
-        disks_vec_.push_back(new_disk);
-    }
-    disk_number_of_peg_[A]=disk_number_;
-    update_buttons();
+        update_buttons();
     
 }
 
@@ -182,8 +176,9 @@ void MainWindow::move_disk(const Peg &from, const Peg &to){
         disk_number_of_peg_[from]--;
         disk_number_of_peg_[to]++;
         disks_vec_.at(top_index).peg_location=to;
+        //set color
+        disks_vec_.at(top_index).disk->setBrush(COLOR[to]);
     }
-
 }
 
 //return true: when smallest(from)< smalleset(to)
@@ -194,10 +189,9 @@ bool MainWindow::is_leagal_from_to(const Peg& from , const Peg& to)const{
             return true;
         }
         int from_index=get_smallest_disk_index_of_peg(from, first_index);
-        is_disk_on_peg(to,first_index);// now first_index is changed for the destination of the peg
+        is_disk_on_peg(to,first_index);// now first_index is changed for destination peg
         int to_index=get_smallest_disk_index_of_peg(to, first_index);
 
-        qDebug()<<QString::number(from_index)<<"  "<<QString::number(to_index);
         return disks_vec_.at(from_index).width<disks_vec_.at(to_index).width;
     }
     return false;
@@ -234,10 +228,6 @@ void MainWindow::update_buttons(){
 }
 
 
-void MainWindow::on_reset_clicked()
-{
-
-}
 
 void MainWindow::on_a_b_clicked()
 {
@@ -273,4 +263,27 @@ void MainWindow::on_c_b_clicked()
 {
     move_disk(C,B);
     update_buttons();
+}
+
+
+
+
+void MainWindow::on_ok_clicked()
+{
+    remove_all_disks();
+    disk_number_=ui_->spinBox->value();
+    Disk new_disk;
+    QBrush brush= COLOR[A];
+    QPen pen(Qt::white);
+    for(int i=0;i<disk_number_;++i){
+        new_disk.peg_location=A;
+        new_disk.width=DISK_WIDTH_MIN+i*DISK_WIDTH_ADD;
+        new_disk.y=BORDER_DOWN-(disk_number_-i)*DISK_HEIGHT;
+        new_disk.x=get_disk_location_x(new_disk.width,CENTER_OF_PEGS[A]);
+        new_disk.disk=scene_->addRect(new_disk.x, new_disk.y, new_disk.width, DISK_HEIGHT, pen, brush);
+        disks_vec_.push_back(new_disk);
+    }
+    disk_number_of_peg_[A]=disk_number_;
+
+    make_6_moving_buttons_disable(true);
 }
