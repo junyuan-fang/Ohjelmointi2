@@ -1,0 +1,13 @@
+nappi "ok", ja "reset" vahvistaa kiekojen valinta ja alustaa pelia.
+"start" napilla tai oikein "keyPressEvent":lla  paasee pelaamaan, ja  ajastin kaynnistyy
+ohjelma estaa laittomat liikkeet auttomaattisesti
+ohjelma ilmoittaa voittoa
+"reset" napilla ohjelma kaynnistetaan uudelleen.
+
+lisaaominaisuuksia:
+1.kiekoilla oma vari
+2.Pelin aikana kerrotaan siihen mennessa kulunut aika.
+3.historia naytetaan
+4.Pelin paatyttya peliasetelman voi palauttaa alkutilanteeseen, jolloin kayttaja voi aloittaa uuden pelin kaynnistamatta ohjelmaa uudelleen."reset" nappi
+5.pystyy pelata seka napilla etta nappamistolla pelia
+
