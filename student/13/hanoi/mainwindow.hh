@@ -109,17 +109,31 @@ private:
     QString history_="";
     vector<char> PEG_CHAR={'A','B','C'};
 
+    //for key's input
+    vector<Peg> keys_;
+    bool is_win=false;
+    bool key_ever_moved=false;
+
 
 
     int get_disk_location_x(const int& width,const int& peg_center)const;
+
     void make_6_moving_buttons_disable(const bool& press);
+
     void move_disk(const Peg& from , const Peg& to);
+
     bool is_leagal_from_to(const Peg& from , const Peg& to)const;
+
     void update_buttons();
+
     int get_smallest_disk_index_of_peg(const Peg& peg, int top_index)const;
+
     bool is_disk_on_peg(const Peg& peg, int& first_index)const;
+
     void remove_all_disks();
+
     void check_winning();
+
     void update_time();
 
 

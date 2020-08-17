@@ -105,6 +105,8 @@ void MainWindow::check_winning(){
         ui_->congraduation->setText(QString("YOU WIN!"));
         make_6_moving_buttons_disable(true);
         timer_->stop();
+        is_win=true;
+        ui_->start->setDisabled(true);
     }
 
 }
@@ -121,23 +123,25 @@ MainWindow::~MainWindow()
 
 void MainWindow::keyPressEvent(QKeyEvent* event) {
 
-    if(event->key() == Qt::Key_A) {
-        if(is_leagal_from_to(A,B) && event->key() == Qt::Key_B){
-            move_disk(A,B);
-            return;
+    if(event->key() == Qt::Key_A||event->key() == Qt::Key_B||event->key() == Qt::Key_C) {
+        keys_.push_back(Peg(event->key()-'A'));
+        if(keys_.size()==2&&!is_win){//check if moving successes
+            if(key_ever_moved==true){
+                timer_->start(1000);
+            }
+            if(is_leagal_from_to(keys_.at(0),keys_.at(1))){
+                move_disk(keys_.at(0),keys_.at(1));
+                update_buttons();
+                check_winning();
+
+                key_ever_moved=true;
+
+            }
+            keys_.clear();
         }
     }
-
-    // moving the circle to south (down) by STEP
-    if(event->key() == Qt::Key_S) {
-//        if(scene_->sceneRect().contains(circle_->x(), circle_->y() + STEP)) {
-//            circle_->moveBy(0, STEP);
-//            ui_->statusLabel->setText("South");
-//        }
-//        update_move_button();
-//        return;
-    }
 }
+
 
 
 void MainWindow::on_start_clicked()
@@ -296,6 +300,8 @@ void MainWindow::on_c_b_clicked()
 
 void MainWindow::on_ok_clicked()
 {
+    is_win=false;
+    ui_->congraduation->setText(QString(""));
     //start button is unlocked
     ui_->start->setDisabled(false);
 
