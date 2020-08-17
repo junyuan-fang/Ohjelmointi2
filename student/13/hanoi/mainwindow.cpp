@@ -120,15 +120,12 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event) {
-    // changing the color of the circle between red and blue
-    if(event->key() == Qt::Key_C) {
-//        if(circle_->brush().color() == Qt::red) {
-//            circle_->setBrush(QBrush(Qt::blue));
-//        } else {
-//            circle_->setBrush(QBrush(Qt::red));
-//        }
-//        ui_->statusLabel->setText("Color");
-//        return;
+
+    if(event->key() == Qt::Key_A) {
+        if(is_leagal_from_to(A,B) && event->key() == Qt::Key_B){
+            move_disk(A,B);
+            return;
+        }
     }
 
     // moving the circle to south (down) by STEP
@@ -183,26 +180,34 @@ int MainWindow::get_smallest_disk_index_of_peg(const Peg &peg, int top_index) co
 //make a helping function that can move the disks,
 //but still need another function for checking the lefality of moving
 //this function always move the smallest one of the peg
+//append moving to history
 void MainWindow::move_disk(const Peg &from, const Peg &to){
     int first_index=0;
-    //if there is a disk on the target get, then we can start moving
-    if(is_disk_on_peg(from,first_index)){
-        int top_index=get_smallest_disk_index_of_peg(from, first_index);
-        //disk's x value changes by peg's location,
-        //y value changes by disk's number
-        //delta_y= the placewill be(y)-right now(y)
-        int delta_x=(to-from)*DISTANCE_PEG;
-        int delta_y= (BORDER_DOWN-(disk_number_of_peg_[to]+1)*DISK_HEIGHT)-disks_vec_.at(top_index).y;
-        disks_vec_.at(top_index).x+=delta_x;
-        disks_vec_.at(top_index).y+=delta_y;
-        //moving
-        disks_vec_.at(top_index).disk->moveBy(delta_x, delta_y);
-        disk_number_of_peg_[from]--;
-        disk_number_of_peg_[to]++;
-        disks_vec_.at(top_index).peg_location=to;
-        //set color
-        disks_vec_.at(top_index).disk->setBrush(COLOR[to]);
-    }
+    //Must have a disk on the target get, then we can start moving
+    is_disk_on_peg(from,first_index);//just indicate the first_index to the right location
+    int top_index=get_smallest_disk_index_of_peg(from, first_index);
+    //disk's x value changes by peg's location,
+    //y value changes by disk's number
+    //delta_y= the placewill be(y)-right now(y)
+    int delta_x=(to-from)*DISTANCE_PEG;
+    int delta_y= (BORDER_DOWN-(disk_number_of_peg_[to]+1)*DISK_HEIGHT)-disks_vec_.at(top_index).y;
+    disks_vec_.at(top_index).x+=delta_x;
+    disks_vec_.at(top_index).y+=delta_y;
+    //moving
+    disks_vec_.at(top_index).disk->moveBy(delta_x, delta_y);
+    disk_number_of_peg_[from]--;
+    disk_number_of_peg_[to]++;
+    disks_vec_.at(top_index).peg_location=to;
+    //set color
+    disks_vec_.at(top_index).disk->setBrush(COLOR[to]);
+    //updating the history;
+    history_.append(PEG_CHAR[from]);
+    history_.append("->");
+    history_.append(PEG_CHAR[to]);
+    history_.append("\n");
+
+    ui_->history->setText(history_);
+
 }
 
 //return true: when smallest(from)< smalleset(to)
@@ -319,6 +324,9 @@ void MainWindow::on_ok_clicked()
     ui_->hour->display(hour_);
     ui_->minute->display(minute_);
     ui_->second->display(second_);
+    //reset history
+    history_.clear();
+    ui_->history->setText(history_);
 
 
 }

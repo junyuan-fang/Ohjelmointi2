@@ -105,6 +105,10 @@ private:
     int minute_;
     int second_;
 
+    //history
+    QString history_="";
+    vector<char> PEG_CHAR={'A','B','C'};
+
 
 
     int get_disk_location_x(const int& width,const int& peg_center)const;

@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -302,6 +305,29 @@
      </rect>
     </property>
    </widget>
+   <widget class="QTextBrowser" name="history">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>40</y>
+      <width>311</width>
+      <height>471</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>10</y>
+      <width>63</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>History:</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -333,8 +359,8 @@
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>450</x>
-     <y>142</y>
+     <x>310</x>
+     <y>184</y>
     </hint>
     <hint type="destinationlabel">
      <x>534</x>
