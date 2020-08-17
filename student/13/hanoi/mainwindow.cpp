@@ -87,6 +87,14 @@ void MainWindow::remove_all_disks(){
     disk_number_of_peg_={0,0,0};
 }
 
+//check and tell the user that, he wins the game
+void MainWindow::check_winning(){
+    if(disk_number_of_peg_[B]==disk_number_ || disk_number_of_peg_[C]==disk_number_){
+        ui_->congraduation->setText(QString("YOU WIN!"));
+        make_6_moving_buttons_disable(true);
+    }
+
+}
 
 MainWindow::~MainWindow()
 {
@@ -200,27 +208,21 @@ bool MainWindow::is_leagal_from_to(const Peg& from , const Peg& to)const{
 
 void MainWindow::update_buttons(){
     make_6_moving_buttons_disable(true);
-    qDebug()<<"A B";
     if(is_leagal_from_to(A,B)){
         ui_->a_b->setEnabled(true);
     }
-    qDebug()<<"A C";
     if(is_leagal_from_to(A,C)){
         ui_->a_c->setEnabled(true);
     }
-    qDebug()<<"B C";
     if(is_leagal_from_to(B,C)){
         ui_->b_c->setEnabled(true);
     }
-    qDebug()<<"B A";
     if(is_leagal_from_to(B,A)){
         ui_->b_a->setEnabled(true);
     }
-    qDebug()<<"C B";
     if(is_leagal_from_to(C,B)){
         ui_->c_b->setEnabled(true);
     }
-    qDebug()<<"C A";
     if(is_leagal_from_to(C,A)){
         ui_->c_a->setEnabled(true);
     }
@@ -233,40 +235,43 @@ void MainWindow::on_a_b_clicked()
 {
     move_disk(A,B);
     update_buttons();
+    check_winning();
 }
 
 void MainWindow::on_b_c_clicked()
 {
     move_disk(B,C);
     update_buttons();
+    check_winning();
 }
 
 void MainWindow::on_c_a_clicked()
 {
     move_disk(C,A);
     update_buttons();
+    check_winning();
 }
 
 void MainWindow::on_a_c_clicked()
 {
     move_disk(A,C);
     update_buttons();
+    check_winning();
 }
 
 void MainWindow::on_b_a_clicked()
 {
     move_disk(B,A);
     update_buttons();
+    check_winning();
 }
 
 void MainWindow::on_c_b_clicked()
 {
     move_disk(C,B);
     update_buttons();
+    check_winning();
 }
-
-
-
 
 void MainWindow::on_ok_clicked()
 {

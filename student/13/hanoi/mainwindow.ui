@@ -241,6 +241,19 @@
      <string>OK</string>
     </property>
    </widget>
+   <widget class="QLabel" name="congraduation">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>190</y>
+      <width>91</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
