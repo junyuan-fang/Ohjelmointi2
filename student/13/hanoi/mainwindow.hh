@@ -49,8 +49,6 @@ private:
 
     QGraphicsScene* scene_;          // a surface for
 
-    QTimer timer_;          // for continuous moving
-
     // Scene
     const int BORDER_DOWN = 260;
     const int BORDER_RIGHT = 680;
@@ -68,7 +66,7 @@ private:
     //colors
     const vector<QBrush> COLOR{
                 Qt::red,
-                Qt::yellow,
+                Qt::magenta,
                 Qt::green
     };
 
@@ -101,6 +99,12 @@ private:
     //number of disks which on the peg
     vector<int> disk_number_of_peg_={0,0,0};
 
+    //timer
+    QTimer* timer_;
+    int hour_;
+    int minute_;
+    int second_;
+
 
 
     int get_disk_location_x(const int& width,const int& peg_center)const;
@@ -112,6 +116,7 @@ private:
     bool is_disk_on_peg(const Peg& peg, int& first_index)const;
     void remove_all_disks();
     void check_winning();
+    void update_time();
 
 
 

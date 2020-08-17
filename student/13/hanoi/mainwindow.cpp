@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_->spinBox->setMinimum(DISK_MIN);
     ui_->spinBox->setMaximum(DISK_MAX);
 
-    ui_->reset->setDisabled(false);
+    ui_->start->setDisabled(true);
     make_6_moving_buttons_disable(true);
 
     //pegs
@@ -66,16 +66,28 @@ MainWindow::MainWindow(QWidget *parent) :
     scene_->addRect(CENTER_OF_PEGS[B],BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
     scene_->addRect(CENTER_OF_PEGS[C],BORDER_DOWN-PEG_HEIGHT,PEG_WIDTH,PEG_HEIGHT-1,blackPen,blackBrush);
 
-    // Defining the color and outline of the disc
-/*    QBrush redBrush(Qt::red);
-    QPen blackPen(Qt::black);
-    blackPen.setWidth(2)*/
+
 
     // A non-singleshot timer fires every interval (1000) milliseconds,
-    // which makes circle_move function to be called,
-    // until the timer is stopped
-//    timer_.setSingleShot(false);
-//    connect(&timer_, &QTimer::timeout, this, &MainWindow::circle_move);
+    timer_=new QTimer(this);
+    timer_->setSingleShot(false);
+    connect(timer_, &QTimer::timeout, this, &MainWindow::update_time);
+
+}
+
+void MainWindow::update_time(){
+    second_++;
+    if(second_==60){
+        second_=0;
+        minute_++;
+    }
+    if(minute_==60){
+        minute_=0;
+        hour_++;
+    }
+    ui_->hour->display(hour_);
+    ui_->minute->display(minute_);
+    ui_->second->display(second_);
 
 }
 
@@ -92,6 +104,7 @@ void MainWindow::check_winning(){
     if(disk_number_of_peg_[B]==disk_number_ || disk_number_of_peg_[C]==disk_number_){
         ui_->congraduation->setText(QString("YOU WIN!"));
         make_6_moving_buttons_disable(true);
+        timer_->stop();
     }
 
 }
@@ -101,7 +114,9 @@ MainWindow::~MainWindow()
     for(Disk item: disks_vec_){
         delete item.disk;
     }
+    delete timer_;
     delete ui_;
+
 }
 
 void MainWindow::keyPressEvent(QKeyEvent* event) {
@@ -131,6 +146,7 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
 void MainWindow::on_start_clicked()
 {
         update_buttons();
+        timer_->start(1000);
     
 }
 
@@ -275,6 +291,10 @@ void MainWindow::on_c_b_clicked()
 
 void MainWindow::on_ok_clicked()
 {
+    //start button is unlocked
+    ui_->start->setDisabled(false);
+
+    //reset disks
     remove_all_disks();
     disk_number_=ui_->spinBox->value();
     Disk new_disk;
@@ -289,6 +309,16 @@ void MainWindow::on_ok_clicked()
         disks_vec_.push_back(new_disk);
     }
     disk_number_of_peg_[A]=disk_number_;
-
+    //reset buttons
     make_6_moving_buttons_disable(true);
+    //reset times
+    second_=0;
+    minute_=0;
+    hour_=0;
+    timer_->stop();
+    ui_->hour->display(hour_);
+    ui_->minute->display(minute_);
+    ui_->second->display(second_);
+
+
 }
