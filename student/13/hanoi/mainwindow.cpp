@@ -19,6 +19,7 @@ void MainWindow:: make_6_moving_buttons_disable(const bool& press){
     ui_->c_b->setDisabled(press);
 }
 
+//return the x(int) value on the scene_
 int MainWindow:: get_disk_location_x(const int& width,const int& peg_center)const{
     return peg_center-width/2;
 }
@@ -54,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent) :
     //set defaults
     ui_->spinBox->setMinimum(DISK_MIN);
     ui_->spinBox->setMaximum(DISK_MAX);
-
     ui_->start->setDisabled(true);
     make_6_moving_buttons_disable(true);
 
@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+//calculate and display the time to the LCD-wiget
 void MainWindow::update_time(){
     second_++;
     if(second_==60){
@@ -91,6 +92,8 @@ void MainWindow::update_time(){
 
 }
 
+//remove all disks' data for reseting
+//also the data, which pointer stored, will be released
 void MainWindow::remove_all_disks(){
     for(Disk i : disks_vec_){
         delete i.disk;
@@ -99,7 +102,8 @@ void MainWindow::remove_all_disks(){
     disk_number_of_peg_={0,0,0};
 }
 
-//check and tell the user that, he wins the game
+//check and tell the user that, he wins the game.
+//and turn all 6 moving buttons to disabled. stop the timer
 void MainWindow::check_winning(){
     if(disk_number_of_peg_[B]==disk_number_ || disk_number_of_peg_[C]==disk_number_){
         ui_->congraduation->setText(QString("YOU WIN!"));
@@ -111,16 +115,20 @@ void MainWindow::check_winning(){
 
 }
 
+//the destructor
 MainWindow::~MainWindow()
 {
     for(Disk item: disks_vec_){
         delete item.disk;
     }
     delete timer_;
+    delete scene_;
     delete ui_;
 
 }
 
+//press keys from the keyboar,timer and other stuff or method "push_buttons" can do,
+//this one also
 void MainWindow::keyPressEvent(QKeyEvent* event) {
 
     if(event->key() == Qt::Key_A||event->key() == Qt::Key_B||event->key() == Qt::Key_C) {
@@ -143,12 +151,11 @@ void MainWindow::keyPressEvent(QKeyEvent* event) {
 }
 
 
-
+//after resetting, update button(which can legally move), and start timing
 void MainWindow::on_start_clicked()
 {
         update_buttons();
-        timer_->start(1000);
-    
+        timer_->start(1000);   
 }
 
 //return bool value ture if there is a disk on the peg,
@@ -166,7 +173,7 @@ bool MainWindow::is_disk_on_peg(const Peg &peg, int& first_index) const{
     return find;
 }
 
-// go through the vec, and return the top_index of the peg
+// go through the vec, and return the top_index of the current peg
 int MainWindow::get_smallest_disk_index_of_peg(const Peg &peg, int top_index) const{
     unsigned int i = 0;
     do{
@@ -181,10 +188,7 @@ int MainWindow::get_smallest_disk_index_of_peg(const Peg &peg, int top_index) co
 }
 
 
-//make a helping function that can move the disks,
-//but still need another function for checking the lefality of moving
-//this function always move the smallest one of the peg
-//append moving to history
+//this is a helping function, which can move the disks,
 void MainWindow::move_disk(const Peg &from, const Peg &to){
     int first_index=0;
     //Must have a disk on the target get, then we can start moving
@@ -214,7 +218,7 @@ void MainWindow::move_disk(const Peg &from, const Peg &to){
 
 }
 
-//return true: when smallest(from)< smalleset(to)
+//return bool value true when when disk can move from peg(from) to the target peg(to)
 bool MainWindow::is_leagal_from_to(const Peg& from , const Peg& to)const{
     int first_index=0;// first index of the
     if(is_disk_on_peg(from,first_index)){
@@ -230,7 +234,7 @@ bool MainWindow::is_leagal_from_to(const Peg& from , const Peg& to)const{
     return false;
 }
 
-
+//check the legality and update the button
 void MainWindow::update_buttons(){
     make_6_moving_buttons_disable(true);
     if(is_leagal_from_to(A,B)){
@@ -298,6 +302,10 @@ void MainWindow::on_c_b_clicked()
     check_winning();
 }
 
+
+//this method is also linked with the "reset button"
+//it will reset or erase useless datas, update buttons,
+//reset timer, reset history
 void MainWindow::on_ok_clicked()
 {
     is_win=false;
