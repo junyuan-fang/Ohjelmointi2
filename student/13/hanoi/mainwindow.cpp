@@ -5,8 +5,7 @@
 #include <QKeyEvent>
 #include <QGraphicsRectItem>
 #include <vector>
-#include <map>
-#include <memory>
+#include <cmath>
 
 using namespace std;
 
@@ -56,6 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui_->spinBox->setMinimum(DISK_MIN);
     ui_->spinBox->setMaximum(DISK_MAX);
     ui_->start->setDisabled(true);
+    ui_->animation->setDisabled(true);
     make_6_moving_buttons_disable(true);
 
     //pegs
@@ -70,9 +70,68 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // A non-singleshot timer fires every interval (1000) milliseconds,
     timer_=new QTimer(this);
+    animate_time_=new QTimer(this);
     timer_->setSingleShot(false);
     connect(timer_, &QTimer::timeout, this, &MainWindow::update_time);
+    connect(animate_time_, &QTimer::timeout, this, &MainWindow::auto_moving);
 
+
+}
+
+void MainWindow::auto_moving(){
+    current_step_++;
+    if (current_step_ % 3 == 1){
+        if(is_leagal_from_to(A,B)){
+            move_disk(A,B);
+        }
+//        else{move_disk(B,A);
+//        }
+    }
+    if (current_step_ % 3 == 2){
+        if(is_leagal_from_to(A,C)){
+            move_disk(A,C);
+        }
+        else{move_disk(C,A);
+        }
+    }
+    if (current_step_ % 3 == 0){
+        if(is_leagal_from_to(B,C)){
+            move_disk(B,C);
+        }
+        else{move_disk(C,B);
+        }
+    }
+
+
+
+
+    if(current_step_==steps_){
+        animate_time_->stop();
+        check_winning();
+    }
+}
+
+void MainWindow::hanoi_moving_recursion(int disk_n, Peg A, Peg C, Peg B){
+    if(disk_n==0){
+        return;
+    }
+    hanoi_moving_recursion(disk_n-1,A,B,C);
+
+    move_disk(A,C);
+
+    hanoi_moving_recursion(disk_n-1,B,C,A);
+
+}
+
+
+void MainWindow::on_animation_clicked()
+{
+    steps_=pow(2,disk_number_)-1;
+    current_step_=0;
+    make_6_moving_buttons_disable(true);
+    animate_time_->start(1000);
+    //hanoi_moving_recursion( disk_number_, A,  C,  B);
+    ui_->animation->setDisabled(true);
 }
 
 //calculate and display the time to the LCD-wiget
@@ -309,9 +368,17 @@ void MainWindow::on_c_b_clicked()
 void MainWindow::on_ok_clicked()
 {
     is_win=false;
+   //stop animation time
+    //animate_time_->stop();
+
     ui_->congraduation->setText(QString(""));
     //start button is unlocked
     ui_->start->setDisabled(false);
+
+    //animate button is unlocked
+    ui_->animation->setDisabled(false);
+
+    current_step_=0;
 
     //reset disks
     remove_all_disks();
@@ -344,3 +411,5 @@ void MainWindow::on_ok_clicked()
 
 
 }
+
+

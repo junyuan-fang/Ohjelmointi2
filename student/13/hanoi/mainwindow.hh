@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <vector>
 #include <map>
+#include <cmath>
 using namespace std;
 
 
@@ -42,8 +43,9 @@ private slots:
     void on_c_b_clicked();
 
     void on_ok_clicked();
-
-
+    
+    void on_animation_clicked();
+    
 private:
     Ui::MainWindow *ui_;
 
@@ -114,6 +116,11 @@ private:
     bool is_win=false;
     bool key_ever_moved=false;
 
+    //animation
+    QTimer* animate_time_;
+    int  steps_;
+    int current_step_;
+
 
 
     int get_disk_location_x(const int& width,const int& peg_center)const;
@@ -136,7 +143,9 @@ private:
 
     void update_time();
 
+    void hanoi_moving_recursion(int disk_n, Peg A, Peg C, Peg B);
 
+    void auto_moving();
 
 };
 
