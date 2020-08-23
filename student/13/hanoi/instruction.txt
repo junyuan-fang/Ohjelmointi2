@@ -10,4 +10,5 @@ lisaaominaisuuksia:
 3.historia naytetaan
 4.Pelin paatyttya peliasetelman voi palauttaa alkutilanteeseen, jolloin kayttaja voi aloittaa uuden pelin kaynnistamatta ohjelmaa uudelleen."reset" nappi
 5.pystyy pelata seka napilla etta nappamistolla pelia
+6.animaatio
 
