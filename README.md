@@ -1,6 +1,3 @@
-Ohjelmointi 2: Perusteet / Programming 2: Basics
-
-Kesä/Summer 2020
-
-Tämä repo sisältää opiskelijalle jaettavat materiaalit.
-This repository contains materials for students.
+"15-game" is located in 03
+"Library" system is located in 07
+"Hanoi tower GUI" is located in 13 
